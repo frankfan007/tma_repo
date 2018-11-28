@@ -5,7 +5,9 @@
 clc; clearvars; close all;
 
 % rng('default')
-for mc = 1:1        % monte carlo simulations
+MC = 100;           % number of Monte Carlo runs
+
+for mc = 1:MC        % monte carlo simulations
     
     model       = InitParameters;               % initialize all parameters.
     GTruth      = GenTruth(model);              % generate ground truth target and observer trajectory
@@ -28,26 +30,6 @@ for mc = 1:1        % monte carlo simulations
     Result(mc).X{1} = Xki*Wki;                  % initial target state
     Result(mc).P{1} = Xki*Xki'./model.N;        % initial state covariance
     
-    % % initial target state
-    % Xo_k   = [0; 2.57*sin(140*pi/180); 0; 2.57*cos(140*pi/180)];       % 5 knots, 140 deg
-    % GTruth.Ownship(:,1) = Xo_k;                 % initial observer state
-    % xinit   = [500; 3; 400; 4];                 % initial target state
-    % % ChangeCourse = false;
-    %
-    % Measures.Z = cell(model.K,1); % initialize measurement structure
-    % Measures.Z{1} = MeasFcn(xinit-Xo_k, model, true);     % first measurement
-    %
-    % %%  main filtering loop
-    % for k = 2:model.K
-    %     if k >= model.K/2
-    %         Ucontrol = [140, 2.57];
-    %     else
-    %         Ucontrol = [20, 2.57];
-    %     end
-    %     [Measures, GTruth] = OnlineData(Measures, GTruth, Ucontrol, model, k);
-    % end
-    
-    % figure,
     for k = 2:model.K       % total number of scans
         %     refresh;
         zk = Measures.Z{k};                                 % current measurement
@@ -68,25 +50,25 @@ for mc = 1:1        % monte carlo simulations
         error = GTruth.X{k} - Result(mc).X{k};
         Result(mc).NEES(k) = error'*pinv(P)*error;
         %%  plot
-        scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),'filled','bd')   % ground truth position of the target
-        hold on
-        %     scatter(xk_new(1,:),xk_new(3,:),'.r')                           % scatter particles on the ground truth
-        scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','ok')    % estimation result
-        legend('Ground Truth', 'Estimation')
+%         scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),'filled','bd')   % ground truth position of the target
+%         hold on
+%         %     scatter(xk_new(1,:),xk_new(3,:),'.r')                           % scatter particles on the ground truth
+%         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','ok')    % estimation result
+%         legend('Ground Truth', 'Estimation')
     end     % simulation
     
     
 end     % monte carlo run
 
-% for mc = 1:100
-%     NEES(mc,:) = Result(mc).NEES(:);
-% end
-% ANEES       = mean(NEES,1);                       % average NEES
-% stdOfNEES   = std(NEES,1);
-% figure, plot(ANEES), title('ANEES of 100 Monte Carlo Runs')
-%
-% hold on
-% plot(ones(1,model.K),'--k')
+for mc = 1:100
+    NEES(mc,:) = Result(mc).NEES(2:end);
+end
+ANEES       = mean(NEES,1);                       % average NEES
+stdOfNEES   = std(NEES,1);
+figure, plot(ANEES), title('ANEES of 100 Monte Carlo Runs')
+
+hold on
+plot(ones(1,model.K),'--k')
 
 
 
