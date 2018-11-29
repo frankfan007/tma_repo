@@ -43,8 +43,6 @@ for mc = 1:MC        % monte carlo simulations
         %%  collect the estimation results
         P   = xk_new*xk_new'./(model.N-1);                      % estimation covariance
         Result(mc).X{k} = xk_new*ones(model.N,1)/model.N;       % corresponds to sum(xk*wk)
-        Result(mc).N(k) = 1;                                    % 1 for single target
-        Result(mc).L{k} = [];                                   % empty for single target
         Result(mc).P{k} = P;                                    % estimated state covariance
         
         %%  plot
