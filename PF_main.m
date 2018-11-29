@@ -47,21 +47,21 @@ for mc = 1:MC        % monte carlo simulations
         Result(mc).L{k} = [];                                   % empty for single target
         Result(mc).P{k} = P;                                    % estimated state covariance
         
-        error = GTruth.X{k} - Result(mc).X{k};
-        Result(mc).NEES(k) = error'*pinv(P)*error;
         %%  plot
-%         scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),'filled','bd')   % ground truth position of the target
-%         hold on
-%         %     scatter(xk_new(1,:),xk_new(3,:),'.r')                           % scatter particles on the ground truth
-%         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','ok')    % estimation result
-%         legend('Ground Truth', 'Estimation')
+        %         scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),'filled','bd')   % ground truth position of the target
+        %         hold on
+        %         %     scatter(xk_new(1,:),xk_new(3,:),'.r')                           % scatter particles on the ground truth
+        %         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','ok')    % estimation result
+        %         legend('Ground Truth', 'Estimation')
     end     % simulation
     
     
 end     % monte carlo run
 
 for mc = 1:100
-    NEES(mc,:) = Result(mc).NEES(2:end);
+    error               = GTruth.X{k} - Result(mc).X{k};
+    Result(mc).NEES(k)  = error'*pinv(P)*error;
+    NEES(mc,:)          = Result(mc).NEES(2:end);
 end
 ANEES       = mean(NEES,1);                       % average NEES
 stdOfNEES   = std(NEES,1);
