@@ -24,8 +24,6 @@ for mc = 1:MC        % monte carlo simulations
     
     %%  output variable initialization
     Result(mc).X = cell(model.K, 1);            % estimated state variable
-    Result(mc).N = zeros(model.K, 1);           % estimated number of targets
-    Result(mc).L = cell(model.K, 1);            % estimated target labels
     
     Result(mc).X{1} = Xki*Wki;                  % initial target state
     Result(mc).P{1} = Xki*Xki'./model.N;        % initial state covariance
@@ -56,17 +54,17 @@ for mc = 1:MC        % monte carlo simulations
     
 end     % monte carlo run
 
-for mc = 1:100
-    error               = GTruth.X{k} - Result(mc).X{k};
-    Result(mc).NEES(k)  = error'*pinv(P)*error;
-    NEES(mc,:)          = Result(mc).NEES(2:end);
-end
-ANEES       = mean(NEES,1);                       % average NEES
-stdOfNEES   = std(NEES,1);
-figure, plot(ANEES), title('ANEES of 100 Monte Carlo Runs')
-
-hold on
-plot(ones(1,model.K),'--k')
+% for mc = 1:100
+%     error               = GTruth.X{k} - Result(mc).X{k};
+%     Result(mc).NEES(k)  = error'*pinv(P)*error;
+%     NEES(mc,:)          = Result(mc).NEES(2:end);
+% end
+% ANEES       = mean(NEES,1);                       % average NEES
+% stdOfNEES   = std(NEES,1);
+% figure, plot(ANEES), title('ANEES of 100 Monte Carlo Runs')
+% 
+% hold on
+% plot(ones(1,model.K),'--k')
 
 
 
