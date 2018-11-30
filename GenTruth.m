@@ -14,7 +14,7 @@ GTruth.X            = cell(K,1);            % ground truth target states
 GTruth.Ownship      = zeros(model.xDim, K); % ownship trajectory
 
 %%  target initial state(s)
-xinit = cat(2,[8000; 3.6*sin(-130*pi/180); 0; 3.6*cos(-130*pi/180)]);
+xinit = cat(2,[5000; 2.1*sin(-140*pi/180); 0; 2.1*cos(-140*pi/180)]);
 oinit = [0; 2.57*sin(140*pi/180); 0; 2.57*cos(140*pi/180)];       % 5 knots, 140 deg
 
 %   birth and death times of each target

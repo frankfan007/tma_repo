@@ -5,7 +5,7 @@
 clc; clearvars; close all;
 
 % rng('default')
-MC = 100;           % number of Monte Carlo runs
+MC = 1;           % number of Monte Carlo runs
 
 for mc = 1:MC        % monte carlo simulations
     
@@ -44,11 +44,11 @@ for mc = 1:MC        % monte carlo simulations
         Result(mc).P{k} = P;                                    % estimated state covariance
         
         %%  plot
-        %         scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),'filled','bd')   % ground truth position of the target
-        %         hold on
-        %         %     scatter(xk_new(1,:),xk_new(3,:),'.r')                           % scatter particles on the ground truth
-        %         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','ok')    % estimation result
-        %         legend('Ground Truth', 'Estimation')
+%         scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),'filled','bd')   % ground truth position of the target
+%         hold on
+%         %     scatter(xk_new(1,:),xk_new(3,:),'.r')                           % scatter particles on the ground truth
+%         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','ok')    % estimation result
+%         legend('Ground Truth', 'Estimation')
     end     % simulation
     
     
