@@ -14,11 +14,16 @@
 function [xhat, xk_new, wk_new] = BootstrapPF(xk_prev, wk_prev, zk, Uk, model)
 
 Ns      = size(xk_prev,2);                              % number of particles
+
+%%  prediction
 Xki     = SampleParticles(xk_prev, Uk, model);          % predicted particles
 Wki     = SampleWeights(Xki, wk_prev, zk, model);       % predicted weights
 wk_pred = Wki/sum(Wki);                                 % normalized weights
 
 xhat    = Xki*wk_pred;
+
+%% update
+
 %% resampling (should be another function)- implement alternative resampling strategies
 Neff = 1/sum(wk_pred.^2);
 if Neff <= model.Nthr

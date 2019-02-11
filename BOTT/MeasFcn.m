@@ -6,7 +6,7 @@
 %           * bearings measurements,
 %           * cartesian measurements
 
-function Zk = MeasFcn(Xk, ModelParams, IsNoisy)
+function [Zk, Theta] = MeasFcn(Xk, ModelParams, IsNoisy)
 
 
 ProblemDim  = ModelParams.PDim;         % problem dimension 2-D or 3-D cartesian
@@ -25,7 +25,9 @@ switch ProblemDim
             h = @(x) [atan2(x(1,:),x(3,:)); sqrt(x(1,:).^2 + x(3,:).^2) ];
         end
 end
+
 z = h(Xk);        % transformed measurements
+Theta = z;          % true bearings
 if IsNoisy
     Zk = z + sigma_w*randn(wDim, 1);
 else

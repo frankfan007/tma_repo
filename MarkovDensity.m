@@ -15,8 +15,8 @@ switch length(varargin)
         Q   = varargin{1};
         Uk  = varargin{2};
     case 1
-        Q   = model.Qk;
-        Uk  = varargin{1};
+        Q   = varargin{1};
+        Uk  = zeros(model.xDim, 1);
     case 0
         Q   = model.Qk;
         Uk  = zeros(model.xDim, 1);

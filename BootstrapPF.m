@@ -11,11 +11,11 @@
 %           * new particle weights (wk_new).
 
 
-function [xk_new, wk_new] = BootstrapPF(xk_prev, zk, model)
+function [xk_new, wk_new] = BootstrapPF(xk_prev, wk_prev, zk, model)
 
 Ns      = size(xk_prev,2);                              % number of particles
 Xki     = SampleParticles(xk_prev, model);              % predicted particles
-Wki     = SampleWeights(Xki, zk, model);                % predicted weights
+Wki     = SampleWeights(Xki, wk_prev, zk, model);       % predicted weights
 wk_pred = Wki/sum(Wki);                                 % normalized weights
 
 %% resampling (should be another function)- implement alternative resampling strategies

@@ -18,7 +18,7 @@ model.vDim      = model.xDim;   % process noise vector size
 model.wDim      = model.zDim;   % measurement noise vector size
 
 %%  Noise parameters
-model.sigma_w   = diag([0.5*pi/180]);                 % measurement noise std (in rad)
+model.sigma_w   = diag([2*pi/180]);                 % measurement noise std (in rad)
 model.sigma_v   = 1e-6;                              % process noise intensity
 model.Qk        = model.sigma_v*kron(eye(model.PDim),[(model.dT^3)/3 (model.dT^2)/2; (model.dT^2)/2 model.dT]);
 model.R         = model.sigma_w*model.sigma_w';     % mesurement error covariance
@@ -31,7 +31,7 @@ model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT
 
 %%  Particle Filter parameters
 model.N         = 5000;         % number of particles
-model.Nthr      = model.N*0.95;    % resampling threshold
+model.Nthr      = model.N*1;    % resampling threshold
 
 %%  initialization parameters
 std_r     = 0.5e3;
@@ -45,7 +45,7 @@ model.m_init    = @(theta1) [r_init*sin(theta1*pi/180); ...
                              1.02*sin(theta1*pi/180+pi);...
                              r_init*cos(theta1*pi/180); ...
                              1.02*cos(theta1*pi/180+pi)];
-model.P_init    = diag([500 1.02*sin(pi/sqrt(12)) 500 1.02*cos(pi/sqrt(12))]).^2;
+model.P_init    = diag([100 .5*sin(pi/sqrt(12)) 100 .5*cos(pi/sqrt(12))]).^2;
 %%  Clutter parameters
 model.range_cz  = [-pi/2, pi/2];    % clutter range
 model.pdf_cz    = 1/prod(model.range_cz(:,2) - model.range_cz(:,1)); % clutter spatial distribution is uniform

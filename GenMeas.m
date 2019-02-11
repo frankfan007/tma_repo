@@ -19,6 +19,7 @@ for k = 1:model.K
     Nc = poissrnd(model.Lambda);                % number of clutter points
     C = repmat(model.range_cz(:,1), [1 Nc]) + diag(model.range_cz*[-1;1])*rand(model.zDim, Nc);  % generate clutter points
     Measures.Z{k} = [Measures.Z{k}, C];         % measurement set at time k
+%     Measures.TrueObs{k} = 
 end
 
 

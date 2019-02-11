@@ -6,8 +6,8 @@ z=zeros(2,NS);
 var_R=(sigma_R)^2;
 var_phi=(sigma_phi)^2;
 %measurement polar to cartesian conversion
-cp_m=cos(phi_m);
-sp_m=sin(phi_m);
+cp_m=sin(phi_m);
+sp_m=cos(phi_m);
 X_m=R_m.*cp_m;
 Y_m=R_m.*sp_m;
 

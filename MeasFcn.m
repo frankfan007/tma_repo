@@ -20,9 +20,9 @@ switch ProblemDim
     case 2
         % four-quadrant inverse tangent, Zk in (-pi,pi)
         if ModelParams.zDim == 1
-            h = @(x) atan2(x(1,:),x(3,:));
+            h = @(x) atan2(x(3,:),x(1,:));
         elseif ModelParams.zDim == 2
-            h = @(x) [atan2(x(1,:),x(3,:)); sqrt(x(1,:).^2 + x(3,:).^2) ];
+            h = @(x) [atan2(x(3,:),x(1,:)); sqrt(x(1,:).^2 + x(3,:).^2) ];
         end
 end
 z = h(Xk);        % transformed measurements

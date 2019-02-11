@@ -10,10 +10,10 @@
 
 function gk_z = computeLikelihood(zk, xki, model)
 
-zk_hat  = MeasFcn(xki, model, true);       % predicted measurements, without noise
+zk_hat  = MeasFcn(xki, model, false);       % predicted measurements, without noise
 R       = model.R;                          % measurement covariance matrix
 invR    = R^(-1);                           % inverse of the measurement covariance (ignores the correlation)
-expo    = sum((invR*(repmat(zk,[1 size(zk_hat,2)])-zk_hat).^2),1)/model.N;
+expo    = sum((invR*(repmat(zk,[1 size(zk_hat,2)])-zk_hat).^2),1);%/model.N;
 gk_z    = exp(-expo/2-log(2*pi*det(R)));    % likelihood value
 
 end

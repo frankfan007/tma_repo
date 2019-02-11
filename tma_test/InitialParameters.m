@@ -22,8 +22,8 @@ param.ownArea=[120;-120];
 
 %% Target
 %Initial Target Pos
-param.tarX=10*km2m; %m
-param.tarY=50*km2m; %m
+param.tarX=49.49*km2m; %m
+param.tarY=49.49*km2m; %m
 % Course 
 param.tarCourse=240;  %degree
 param.tarManevTime= [240;480;param.totaltime];  %sec
