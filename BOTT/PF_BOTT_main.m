@@ -50,10 +50,10 @@ for mc = 1:MC
         %%  plot
         if k == model.K
             scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),200,'bx')   % ground truth position of the target
-            scatter(xhat(1,:),xhat(3,:),200,'xr')
+            scatter(xhat(1,:),xhat(3,:),200,'xr')                   % estimation
         else
             scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),200,'b.')   % ground truth position of the target
-            scatter(xhat(1,:),xhat(3,:),200,'.r')
+            scatter(xhat(1,:),xhat(3,:),200,'.r')                   % estimation
         end
         hold on
         
