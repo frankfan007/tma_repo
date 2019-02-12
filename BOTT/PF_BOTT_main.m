@@ -42,6 +42,7 @@ for mc = 1:MC
         P   = xk_new*xk_new'./(model.N-1);                      % estimation covariance
         Result(mc).X{k} = xhat;                                 % corresponds to sum(xk*wk)
         Result(mc).P{k} = P;                                    % estimated state covariance
+        Result(mc).Particles{k} = Xki;                          % save particles if necessary
         
         %%  plot
         if k == model.K
@@ -52,16 +53,15 @@ for mc = 1:MC
             scatter(xhat(1,:),xhat(3,:),200,'.r')                   % estimation
         end
         hold on
-%         scatter(Xki(1,:),Xki(3,:),'g.')                             % show particles if necessary
+        scatter(Xki(1,:),Xki(3,:),'g.')                             % show particles if necessary
         
 %             scatter(xhat(1,:),xhat(3,:),200,'xr')                           % scatter particles on the ground truth
             
 %         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','or')    % estimation result
         
     end     % simulation
-    plot(GTruth.Ownship(1,:), GTruth.Ownship(3,:),'k-')
-    legend('Estimation', 'Ground Truth')
+%     plot(GTruth.Ownship(1,:), GTruth.Ownship(3,:),'k-')
+%     legend('Estimation', 'Ground Truth')
 end
 
-% figure, plot(zvec)
-
+% PlotResult(Result, GTruth)
