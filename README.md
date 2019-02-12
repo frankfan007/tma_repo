@@ -1,5 +1,4 @@
-# RFS_filters
-This repository will be a home to the RFS based particle filters.
+Particle filter based target tracking
 
 Motion models available:
   * CV, CA or CT motion models.
