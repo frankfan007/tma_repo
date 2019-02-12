@@ -28,14 +28,10 @@ for mc = 1:MC
     zvec(:,1) = zk_1;
     for k = 1:model.K       % total number of scans
         %     refresh;
-        zk = Measures.Z{k};                                 % current measurement
+        zk = Measures.Z{k};                         % current measurement
         zvec(:,k) = zk;
-        own = GTruth.Ownship(:,k);                        % previous ownship state
-        if k < model.K
-            Uk = model.S(GTruth.Ownship(:,k+1), own);             % control input
-        else
-            Uk = 0;
-        end
+        own = GTruth.Ownship(:,k);                  % previous ownship state
+        Uk = 0;                                     % control input, not used for now
         [xhat, xk_new, wk_new] = BootstrapPF(Xki, Wki,zk, Uk, own, model);
         
         %% update variables for next cycle
@@ -56,14 +52,15 @@ for mc = 1:MC
             scatter(xhat(1,:),xhat(3,:),200,'.r')                   % estimation
         end
         hold on
+%         scatter(Xki(1,:),Xki(3,:),'g.')                             % show particles if necessary
         
 %             scatter(xhat(1,:),xhat(3,:),200,'xr')                           % scatter particles on the ground truth
-%             scatter(Xki(1,:),Xki(3,:),'g.')
+            
 %         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','or')    % estimation result
         
     end     % simulation
     plot(GTruth.Ownship(1,:), GTruth.Ownship(3,:),'k-')
-    legend('Ground Truth', 'Ownship')
+    legend('Estimation', 'Ground Truth')
 end
 
 % figure, plot(zvec)

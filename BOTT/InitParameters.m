@@ -34,9 +34,6 @@ model.N         = 10000;         % number of particles
 model.Nthr      = model.N*.3;    % resampling threshold
 
 %%  initialization parameters
-std_r     = 0.5e3;
-std_s     = 0.257;        % m/s (0.5 knots)
-
 r_init    = 5e3;          % expected target range (meters)
 model.stdtheta  = pi/sqrt(12);  % standard deviation of the range
 model.stds      = 1.02;         % standard deviation of velocity components (m/s)
@@ -46,6 +43,7 @@ model.m_init    = @(theta1) [r_init*sin(theta1*pi/180); ...
                              r_init*cos(theta1*pi/180); ...
                              1.02*cos(theta1*pi/180+pi)];
 model.P_init    = diag([100 .5*sin(pi/sqrt(12)) 100 .5*cos(pi/sqrt(12))]).^2;
+
 %%  Clutter parameters
 model.range_cz  = [-pi/2, pi/2];    % clutter range
 model.pdf_cz    = 1/prod(model.range_cz(:,2) - model.range_cz(:,1)); % clutter spatial distribution is uniform

@@ -8,7 +8,7 @@
 
 function GTruth = GenTruth(model)
 
-sknot = 0.514;          % 1 knot in m/s
+sknot = 0.514;                              % 1 knot in m/s
 K = model.K;                                % number of scans
 
 GTruth.X            = cell(K,1);            % ground truth target states

@@ -17,7 +17,7 @@ Ns      = size(xk_prev,2);                              % number of particles
 
 %%  prediction
 Xki     = SampleParticles(xk_prev, Uk, model);          % predicted particles
-Wki     = SampleWeights(Xki, wk_prev, zk, own, model);       % predicted weights
+Wki     = SampleWeights(Xki, wk_prev, zk, own, model);  % predicted weights
 wk_pred = Wki/sum(Wki);                                 % normalized weights
 
 xhat    = Xki*wk_pred;
