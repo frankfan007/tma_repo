@@ -15,10 +15,10 @@ for mc = 1:MC
     
     %%  particle, weight, state initialization
     zk_1        = Measures.Z{1};                % first measurement
-    m_init      = [5100; -1.5; 500; -1.5];%GTruth.X{1};%model.m_init(zk_1);
+    m_init      = [5100; -1.5; 500; -1.5];      % particle initialization state
     own         = GTruth.Ownship(:,1);
     
-    Xki     = initParticles(m_init, model.P_init, own, model.N, model);
+    Xki     = initParticles(m_init, model.P_init, own, model.N, model);     % initial particles
     Wki     = ones(model.N,1)/model.N;              % initial, uniform weights
     %%  output variable initialization
     Result(mc).X    = cell(model.K, 1);             % estimated state variable  
