@@ -25,18 +25,18 @@ for mc = 1:MC
     Result(mc).X{1} = Xki*Wki;                      % initial target state
     Result(mc).P{1} = Xki*Xki'./model.N;            % initial state covariance
     
-    zvec(1) = zk_1;
+    zvec(:,1) = zk_1;
     for k = 1:model.K       % total number of scans
         %     refresh;
         zk = Measures.Z{k};                                 % current measurement
-        zvec(k) = zk;
+        zvec(:,k) = zk;
         own = GTruth.Ownship(:,k);                        % previous ownship state
         if k < model.K
             Uk = model.S(GTruth.Ownship(:,k+1), own);             % control input
         else
             Uk = 0;
         end
-        [xhat, xk_new, wk_new] = BootstrapPF(Xki, Wki,zk, Uk, model);
+        [xhat, xk_new, wk_new] = BootstrapPF(Xki, Wki,zk, Uk, own, model);
         
         %% update variables for next cycle
         Xki     = xk_new;

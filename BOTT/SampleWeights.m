@@ -8,9 +8,9 @@
 %               model   : model parameters
 %
 
-function Wki = SampleWeights(xki, wki_prev, zk, model)
+function Wki = SampleWeights(xki, wki_prev, zk, own, model)
 
-Likelihood  = computeLikelihood(zk, xki, model)'+eps;        % likelihood value as the predicted weight
+Likelihood  = computeLikelihood(zk, xki, own, model)'+eps;        % likelihood value as the predicted weight
 Wki_tilde   = Likelihood.*wki_prev;
 Wki         = Wki_tilde/sum(Wki_tilde);                     % normalized weights
 
