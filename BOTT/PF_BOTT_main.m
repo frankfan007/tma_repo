@@ -15,7 +15,7 @@ for mc = 1:MC
     
     %%  particle, weight, state initialization
     zk_1        = Measures.Z{1};                % first measurement
-    m_init      = [5100; -1.5; 500; -1.5];      % particle initialization state
+    m_init      = [5100; -1.5; 1500; -1.5];      % particle initialization state
     own         = GTruth.Ownship(:,1);
     
     Xki     = initParticles(m_init, model.P_init, own, model.N, model);     % initial particles
@@ -44,24 +44,8 @@ for mc = 1:MC
         Result(mc).P{k} = P;                                    % estimated state covariance
         Result(mc).Particles{k} = Xki;                          % save particles if necessary
         
-        %%  plot
-        if k == model.K
-            scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),200,'bx')   % ground truth position of the target
-            scatter(xhat(1,:),xhat(3,:),200,'xr')                   % estimation
-        else
-            scatter(GTruth.X{k}(1,:),GTruth.X{k}(3,:),200,'b.')   % ground truth position of the target
-            scatter(xhat(1,:),xhat(3,:),200,'.r')                   % estimation
-        end
-        hold on
-        scatter(Xki(1,:),Xki(3,:),'g.')                             % show particles if necessary
-        
-%             scatter(xhat(1,:),xhat(3,:),200,'xr')                           % scatter particles on the ground truth
-            
-%         scatter(Result.X{k}(1,:),Result.X{k}(3,:),'filled','or')    % estimation result
-        
     end     % simulation
-%     plot(GTruth.Ownship(1,:), GTruth.Ownship(3,:),'k-')
-%     legend('Estimation', 'Ground Truth')
+
 end
 
-% PlotResult(Result, GTruth)
+PlotResult(Result, GTruth)
