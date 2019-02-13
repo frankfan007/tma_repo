@@ -6,13 +6,17 @@
 %   state vector x:= [x vx ax y vy ay ...]'
 
 
-function Xnew = MarkovTransition(x, ModelParams, IsNoisy)
+function Xnew = MarkovTransition(x, ModelParams, IsNoisy, varargin)
 
-ProblemDim  = ModelParams.PDim;         % problem dimension 2-D or 3-D cartesian
-SwitchModel = ModelParams.Motion;       % motion (dynamic) model
-delT        = ModelParams.dT;           % sampling interval
+ProblemDim  = ModelParams.PDim;             % problem dimension 2-D or 3-D cartesian
+if ~isempty(varargin)
+    MotionModel = varargin{1};
+else
+    MotionModel = ModelParams.Motion;       % motion (dynamic) model
+end
+delT        = ModelParams.dT;               % sampling interval
 
-switch SwitchModel
+switch MotionModel
     case 'CV'
         switch ProblemDim
             %%  state vector is a 6-element vector: x = [x vx y vy z vz]'
@@ -59,7 +63,12 @@ switch SwitchModel
         else
             %%  this is a 2-D model, state vector: x = [x vx y vy w]'
             L = size(x,2);      % for multiple states
-            w = x(5,:);         % previous turn rate
+            if ~isempty(varargin)
+                w = ModelParams.obs_w;
+            else
+                w = x(5,:);         % previous turn rate
+                X(5,:) = x(5,:);    % constant turn rate
+            end
             sin_omega_T = sin(w*delT);
             cos_omega_T = cos(w*delT);
             a = delT*ones(1,L); b = zeros(1,L);
@@ -71,7 +80,7 @@ switch SwitchModel
             X(3,:) = x(3,:) + b.*x(2,:) + a.*x(4,:);
             X(2,:) = cos_omega_T.*x(2,:) - sin_omega_T.*x(4,:);
             X(4,:) = sin_omega_T.*x(2,:) + cos_omega_T.*x(4,:);
-            X(5,:) = x(5,:);
+            
 %             f = @(x) [  x(1,:) + a.*x(2,:) - b.*x(4,:); ...
 %                         cos_omega_T.*x(2,:) - sin_omega_T.*x(4,:); ...
 %                         x(3,:) + b.*x(2,:) + a.*x(4,:); ...
@@ -79,7 +88,6 @@ switch SwitchModel
 %                         x(5,:) ];
         end
 end
-
 
 if IsNoisy
     Xnew = X + ModelParams.sigma_v*randn(size(X));       % process noise with scale

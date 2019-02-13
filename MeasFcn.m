@@ -6,7 +6,7 @@
 %           * bearings measurements,
 %           * cartesian measurements
 
-function Zk = MeasFcn(Xk, ModelParams, IsNoisy)
+function [Zk, Theta] = MeasFcn(Xk, own, ModelParams, IsNoisy)
 
 
 ProblemDim  = ModelParams.PDim;         % problem dimension 2-D or 3-D cartesian
@@ -20,12 +20,14 @@ switch ProblemDim
     case 2
         % four-quadrant inverse tangent, Zk in (-pi,pi)
         if ModelParams.zDim == 1
-            h = @(x) atan2(x(3,:),x(1,:));
+            h = @(x) atan2(x(1,:),x(3,:));
         elseif ModelParams.zDim == 2
-            h = @(x) [atan2(x(3,:),x(1,:)); sqrt(x(1,:).^2 + x(3,:).^2) ];
+            h = @(x) [atan2(x(1,:),x(3,:)); sqrt(x(1,:).^2 + x(3,:).^2) ];
         end
 end
-z = h(Xk);        % transformed measurements
+
+z = h(Xk-own);      % transformed measurements
+Theta = z;          % true bearings
 if IsNoisy
     Zk = z + sigma_w*randn(wDim, 1);
 else
@@ -33,13 +35,13 @@ else
 end
 %% ------------------------
 % revise...
-if Zk <= -pi
-    Zk = 2*pi + Zk;
-elseif Zk > pi
-    Zk = Zk - 2*pi;
-else
-    Zk = Zk;
-end
+% if Zk <= -pi
+%     Zk = 2*pi + Zk;
+% elseif Zk > pi
+%     Zk = Zk - 2*pi;
+% else
+%     Zk = Zk;
+% end
 % -------------------------
 
 
