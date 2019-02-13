@@ -18,7 +18,7 @@ model.vDim      = model.xDim;   % process noise vector size
 model.wDim      = model.zDim;   % measurement noise vector size
 
 %%  Noise parameters
-model.sigma_w   = diag([1.5*pi/180]);                 % measurement noise std (in rad)
+model.sigma_w   = diag([1*pi/180]);                 % measurement noise std (in rad)
 model.sigma_v   = 1e-6;                              % process noise intensity
 model.Qk        = model.sigma_v*kron(eye(model.PDim),[(model.dT^3)/3 (model.dT^2)/2; (model.dT^2)/2 model.dT]);
 model.R         = model.sigma_w*model.sigma_w';     % mesurement error covariance
@@ -31,7 +31,7 @@ model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT
 
 %%  Particle Filter parameters
 model.N         = 10000;         % number of particles
-model.Nthr      = model.N*.3;    % resampling threshold
+model.Nthr      = model.N*.5;    % resampling threshold
 
 %%  initialization parameters
 r_init    = 5e3;          % expected target range (meters)
