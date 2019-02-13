@@ -49,3 +49,15 @@ for mc = 1:MC
 end
 
 PlotResult(Result, GTruth)
+
+% for mc = 1:100
+%     error               = GTruth.X{k} - Result(mc).X{k};
+%     Result(mc).NEES(k)  = error'*pinv(P)*error;
+%     NEES(mc,:)          = Result(mc).NEES(2:end);
+% end
+% ANEES       = mean(NEES,1);                       % average NEES
+% stdOfNEES   = std(NEES,1);
+% figure, plot(ANEES), title('ANEES of 100 Monte Carlo Runs')
+% 
+% hold on
+% plot(ones(1,model.K),'--k')
