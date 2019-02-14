@@ -31,10 +31,11 @@ model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT
 
 %%  Particle Filter parameters
 model.N         = 10000;         % number of particles
-model.Nthr      = model.N*.5;    % resampling threshold
+model.Nthr      = model.N*.33;    % resampling threshold
 
 %%  initialization parameters
-r_init    = 5e3;          % expected target range (meters)
+
+r_init          = 5e3;          % expected target range (meters)
 model.stdtheta  = pi/sqrt(12);  % standard deviation of the range
 model.stds      = 1.02;         % standard deviation of velocity components (m/s)
 
