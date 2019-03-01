@@ -15,7 +15,7 @@ for mc = 1:MC
     
     %%  particle, weight, state initialization
     zk_1        = Measures.Z{1};                % first measurement
-    m_init      = [5100; -1.5; 500; -1.5];      % particle initialization state
+    m_init      = [2500; -2; 4000; -1.5];      % particle initialization state
     own         = GTruth.Ownship(:,1);
     
     Xki     = initParticles(m_init, model.P_init, own, model.N, model);     % initial particles
@@ -49,15 +49,3 @@ for mc = 1:MC
 end
 
 PlotResult(Result, GTruth)
-
-% for mc = 1:100
-%     error               = GTruth.X{k} - Result(mc).X{k};
-%     Result(mc).NEES(k)  = error'*pinv(P)*error;
-%     NEES(mc,:)          = Result(mc).NEES(2:end);
-% end
-% ANEES       = mean(NEES,1);                       % average NEES
-% stdOfNEES   = std(NEES,1);
-% figure, plot(ANEES), title('ANEES of 100 Monte Carlo Runs')
-% 
-% hold on
-% plot(ones(1,model.K),'--k')
