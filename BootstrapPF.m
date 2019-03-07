@@ -25,7 +25,7 @@ xhat    = Xki*wk_pred;
 %% update
 
 %% resampling (should be another function)- implement alternative resampling strategies
-Neff = 1/sum(wk_pred.^2)
+Neff = 1/sum(wk_pred.^2);
 if Neff <= model.Nthr
     xk_new = Resampling(Xki, wk_pred, model);               % updated particles
     wk_new = ones(1,Ns)/Ns;                                 % new particles (uniform)

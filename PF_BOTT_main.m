@@ -8,14 +8,14 @@ clc; clearvars; close all;
 MC = 1;           % number of Monte Carlo runs
 
 for mc = 1:MC
-    
+    mc
     model       = InitParameters;               % initialize all parameters.
     GTruth      = GenTruth(model);              % generate ground truth target and observer trajectory
-    Measures    = GenMeas(GTruth, model);       % offline data generation
+    Measures(mc)    = GenMeas(GTruth, model);       % offline data generation
     
     %%  particle, weight, state initialization
-    zk_1        = Measures.Z{1};                % first measurement
-    m_init      = [2500; -2; 4000; -1.5];      % particle initialization state
+    zk_1        = Measures(mc).Z{1};                % first measurement
+    m_init      = [7000; -2; 1000; -2];      % particle initialization state
     own         = GTruth.Ownship(:,1);
     
     Xki     = initParticles(m_init, model.P_init, own, model.N, model);     % initial particles
@@ -28,7 +28,7 @@ for mc = 1:MC
     zvec(:,1) = zk_1;
     for k = 1:model.K       % total number of scans
         %     refresh;
-        zk = Measures.Z{k};                         % current measurement
+        zk = Measures(mc).Z{k};                         % current measurement
         zvec(:,k) = zk;
         own = GTruth.Ownship(:,k);                  % previous ownship state
         Uk = 0;                                     % control input, not used for now
@@ -48,4 +48,5 @@ for mc = 1:MC
 
 end
 
-PlotResult(Result, GTruth)
+% save('sim1.mat','Result','GTruth','Measures','model')
+PlotResult(Result(mc), GTruth)

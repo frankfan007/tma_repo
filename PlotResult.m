@@ -11,7 +11,7 @@ scatter(Xgt(1,2:end-1), Xgt(3,2:end-1), 200, 'b.')
 scatter(Xgt(1,end), Xgt(3,end), 'bx')
 
 % first point
-scatter(Xest(1,:), Xest(3,:),200,'r.');
+plot(Xest(1,:), Xest(3,:),'r.-');
 Part = Result.Particles{1};
 % h = scatter(Part(1,:), Part(3,:),'.g');
 
