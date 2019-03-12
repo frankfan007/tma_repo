@@ -5,7 +5,7 @@
 clc; clearvars; close all;
 
 % rng('default')
-MC = 1;           % number of Monte Carlo runs
+MC = 100;           % number of Monte Carlo runs
 
 for mc = 1:MC
     mc
@@ -15,7 +15,7 @@ for mc = 1:MC
     
     %%  particle, weight, state initialization
     zk_1        = Measures(mc).Z{1};                % first measurement
-    m_init      = [7000; -2; 1000; -2];      % particle initialization state
+    m_init      = [7000; -4; 1000; -4];      % particle initialization state
     own         = GTruth.Ownship(:,1);
     
     Xki     = initParticles(m_init, model.P_init, own, model.N, model);     % initial particles
@@ -39,7 +39,7 @@ for mc = 1:MC
         zk_1    = zk;
         
         %%  collect the estimation results
-        P   = xk_new*xk_new'./(model.N-1);                      % estimation covariance
+        P   = (xk_new-xhat)*(xk_new-xhat)'./(model.N);                      % estimation covariance
         Result(mc).X{k} = xhat;                                 % corresponds to sum(xk*wk)
         Result(mc).P{k} = P;                                    % estimated state covariance
         Result(mc).Particles{k} = Xki;                          % save particles if necessary

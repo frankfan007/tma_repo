@@ -1,7 +1,7 @@
 clc; clearvars; close all;
 
 %%  performance evaluation script
-load('Sim1.mat')
+load('sim1.mat')
 
 MC      = length(Result);
 Xtruth  = cell2mat(GTruth.X');               % true target states
@@ -22,4 +22,4 @@ LogANEES = log(ANEES);
 
 figure,
 subplot(211), plot(ANEES)
-subplot(212), plot(LogANEES)
+% subplot(212), plot(LogANEES)
