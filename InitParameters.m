@@ -52,9 +52,9 @@ model.Lambda    = 0;                % average clutter (will be varied)
 model.pD        = 1;                % probability of detection (will be varied)-state dependent parameterization
 
 %%  Observer parameters
-model.manStart  = [28, 68];               % starting index of ownship maneuver
-model.manEnd    = [32, 72];               % ending index of ownship maneuver
-model.TotalTurn = [100, -100];
+model.manStart  = [48];               % starting index of ownship maneuver
+model.manEnd    = [52];               % ending index of ownship maneuver
+model.TotalTurn = [100];
 % model.obs_w     = [(TotalTurn/((model.manEnd(1)-model.manStart(1))*model.dT))*pi/180;...
 %                    (120/((model.manEnd(2)-model.manStart(2))*model.dT))*pi/180;] % ownship turn rate
 model.S = @(xOk, xOk_1) [   xOk(1) - xOk_1(1) - model.dT*xOk_1(2); ...

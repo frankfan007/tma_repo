@@ -17,7 +17,7 @@ for mc = 1:MC
     zk_1        = Measures(mc).Z{1};            % first measurement
     R           = 10000;                        % (meters) particle initial range
     Course      = pi + zk_1;                    % radians
-    Speed       = 3;                            % knots
+    Speed       = 4;                            % knots
     own         = GTruth.Ownship(:,1);
     
     Xki     = initParticles(R, Course, Speed, own, zk_1, model.N, model);     % initial particles
