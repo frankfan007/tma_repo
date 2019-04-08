@@ -5,8 +5,8 @@
 
 function model = InitParameters
 
-model.dT        = 30;           % sampling interval (can be changed for asynchronous case)
-model.K         = 60;           % number of scans
+model.dT        = 20;           % sampling interval (can be changed for asynchronous case)
+model.K         = 100;           % number of scans
 model.Motion    = 'CV';         % motion model 'CT','CA','CV'
 model.xDim      = 4;            % state vector dimension is specified according to motion model
                                 % 4: 2-D CV, 6: 2-D CA, 6: 3-D CV, 
@@ -18,7 +18,7 @@ model.vDim      = model.xDim;   % process noise vector size
 model.wDim      = model.zDim;   % measurement noise vector size
 
 %%  Noise parameters
-model.sigma_w   = diag([2*pi/180]);                 % measurement noise std (in rad)
+model.sigma_w   = diag([1*pi/180]);                 % measurement noise std (in rad)
 model.sigma_v   = .02;                              % process noise intensity
 model.Qk        = model.sigma_v*kron(eye(model.PDim),[(model.dT^3)/3 (model.dT^2)/2; (model.dT^2)/2 model.dT]);
 model.R         = model.sigma_w*model.sigma_w';     % mesurement error covariance
@@ -52,9 +52,11 @@ model.Lambda    = 0;                % average clutter (will be varied)
 model.pD        = 1;                % probability of detection (will be varied)-state dependent parameterization
 
 %%  Observer parameters
-model.manStart  = 28;               % starting index of ownship maneuver
-model.manEnd    = 32;               % ending index of ownship maneuver
-model.obs_w     = (120/150)*pi/180; % ownship turn rate
+model.manStart  = [28, 68];               % starting index of ownship maneuver
+model.manEnd    = [32, 72];               % ending index of ownship maneuver
+model.TotalTurn = [100, -100];
+% model.obs_w     = [(TotalTurn/((model.manEnd(1)-model.manStart(1))*model.dT))*pi/180;...
+%                    (120/((model.manEnd(2)-model.manStart(2))*model.dT))*pi/180;] % ownship turn rate
 model.S = @(xOk, xOk_1) [   xOk(1) - xOk_1(1) - model.dT*xOk_1(2); ...
                             xOk(2) - xOk_1(2);
                             xOk(3) - xOk_1(3) - model.dT*xOk_1(4); ...

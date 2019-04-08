@@ -45,12 +45,17 @@ GTruth.X{1}         = xinit;
 for tnum = 1:nbirths    % for each target
     targetstate = xinit(:,tnum);        % target initial state
     ownstate = oinit;
+    i = 1;
     for k = tbirth(tnum)+1:min(tdeath(tnum),K)
         targetstate = MarkovTransition(targetstate, model, false);      % transition of the state
         %% observer maneuver
-        if k >= model.manStart && k <= model.manEnd
+        model.obs_w = (model.TotalTurn(i)/((model.manEnd(1)-model.manStart(1))*model.dT))*pi/180;
+        if k >= model.manStart(i) && k <= model.manEnd(i)
             % coordinated turn leg
             ownstate = MarkovTransition(ownstate, model, false, 'CT');  % noiseless state transition
+            if k == model.manEnd(i) && i < length(model.manStart)
+                i = i + 1;
+            end
         else
 %             ownstate =[ownstate(1); 2.57*sin(20*pi/180); ownstate(3); 2.57*cos(20*pi/180)];
             ownstate = MarkovTransition(ownstate, model, false);

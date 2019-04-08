@@ -6,6 +6,10 @@ function xk_new = Resampling(xki, wk_pred, model)
 
 Ns = model.N;       % number of particles
 
+%% Greedy Approach
+tau = .8;           % 0 < tau < 1
+% xk_new = GreedyApproach(xki, wk_pred, tau, Ns);
+
 % resampling with replacement
 % idx = randsample(length(wk_pred), Ns, true, wk_pred);   % uniform resampling w.r.t. normalized weights.
 % xk_new  = xki(:,idx);                                   % updated particles
