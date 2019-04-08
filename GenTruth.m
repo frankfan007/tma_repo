@@ -49,7 +49,7 @@ for tnum = 1:nbirths    % for each target
     for k = tbirth(tnum)+1:min(tdeath(tnum),K)
         targetstate = MarkovTransition(targetstate, model, false);      % transition of the state
         %% observer maneuver
-        model.obs_w = (model.TotalTurn(i)/((model.manEnd(1)-model.manStart(1))*model.dT))*pi/180;
+        model.obs_w = (model.TotalTurn(i)/((model.manEnd(i)-model.manStart(i))*model.dT))*pi/180;
         if k >= model.manStart(i) && k <= model.manEnd(i)
             % coordinated turn leg
             ownstate = MarkovTransition(ownstate, model, false, 'CT');  % noiseless state transition

@@ -6,7 +6,7 @@
 function model = InitParameters
 
 model.dT        = 20;           % sampling interval (can be changed for asynchronous case)
-model.K         = 100;           % number of scans
+model.K         = 200;           % number of scans
 model.Motion    = 'CV';         % motion model 'CT','CA','CV'
 model.xDim      = 4;            % state vector dimension is specified according to motion model
                                 % 4: 2-D CV, 6: 2-D CA, 6: 3-D CV, 
@@ -30,8 +30,8 @@ model.bt        = model.sigma_vel*[(model.dT^2)/2; model.dT];
 model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT];
 
 %%  Particle Filter parameters
-model.N         = 5000;         % number of particles
-model.Nthr      = model.N*.5;    % resampling threshold
+model.N         = 3000;         % number of particles
+model.Nthr      = model.N*.4;    % resampling threshold
 
 %%  initialization parameters
 
@@ -52,9 +52,9 @@ model.Lambda    = 0;                % average clutter (will be varied)
 model.pD        = 1;                % probability of detection (will be varied)-state dependent parameterization
 
 %%  Observer parameters
-model.manStart  = [48];               % starting index of ownship maneuver
-model.manEnd    = [52];               % ending index of ownship maneuver
-model.TotalTurn = [100];
+model.manStart  = [48 98];               % starting index of ownship maneuver
+model.manEnd    = [52 102];               % ending index of ownship maneuver
+model.TotalTurn = [120 -100];
 % model.obs_w     = [(TotalTurn/((model.manEnd(1)-model.manStart(1))*model.dT))*pi/180;...
 %                    (120/((model.manEnd(2)-model.manStart(2))*model.dT))*pi/180;] % ownship turn rate
 model.S = @(xOk, xOk_1) [   xOk(1) - xOk_1(1) - model.dT*xOk_1(2); ...
