@@ -23,11 +23,12 @@ wk_pred = Wki/sum(Wki);                                 % normalized weights
 xhat    = Xki*wk_pred;
 
 %% resampling (should be another function)- implement alternative resampling strategies
-Neff = 1/(sum(wk_pred.^2)+eps)
+Neff = 1/(sum(wk_pred.^2))
+% Neff = -sum(wk_pred.*log(wk_pred)./log(Ns));             % entropy of weights
 if isnan(Neff)
     wk_pred = ones(1,Ns)/Ns;
 end
-% Neff = -sum(wk_pred.*log(wk_pred)./log(Ns));             % entropy of weights
+
 if Neff <= model.Nthr || isnan(Neff)
     
     %% update

@@ -14,7 +14,6 @@ tau = .8;           % 0 < tau < 1
 %% MSV approach (deterministic)
 xk_new = MSVresampling(xki, wk_pred, Ns);
 
-
 % resampling with replacement
 % idx = randsample(length(wk_pred), Ns, true, wk_pred);   % uniform resampling w.r.t. normalized weights.
 % xk_new  = xki(:,idx);                                   % updated particles
