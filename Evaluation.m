@@ -2,7 +2,7 @@
 
 XGrT = cell2mat(GTruth.X');
 i = 0;
-for mc = [1,2,3,4,5,6,7,9,10]
+for mc = 1:MC
     i = i+1;
     XEst = cell2mat(Result(mc).X');
     SqErr(:,:,i) = (XGrT - XEst).^2;

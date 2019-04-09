@@ -6,7 +6,7 @@
 function model = InitParameters
 
 model.dT        = 20;           % sampling interval (can be changed for asynchronous case)
-model.K         = 200;           % number of scans
+model.K         = 250;           % number of scans
 model.Motion    = 'CV';         % motion model 'CT','CA','CV'
 model.xDim      = 4;            % state vector dimension is specified according to motion model
                                 % 4: 2-D CV, 6: 2-D CA, 6: 3-D CV, 
@@ -30,8 +30,8 @@ model.bt        = model.sigma_vel*[(model.dT^2)/2; model.dT];
 model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT];
 
 %%  Particle Filter parameters
-model.N         = 3000;         % number of particles
-model.Nthr      = model.N*.5;    % resampling threshold
+model.N         = 5000;         % number of particles
+model.Nthr      = model.N*.3;    % resampling threshold
 
 %%  initialization parameters
 

@@ -29,7 +29,7 @@ if isnan(Neff)
     wk_pred = ones(1,Ns)/Ns;
 end
 
-if Neff <= model.Nthr || isnan(Neff)
+if Neff <= model.Nthr
     
     %% update
     xk_new = Resampling(Xki, wk_pred, model);               % updated particles
