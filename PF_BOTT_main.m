@@ -5,7 +5,7 @@
 clc; clearvars; close all;
 
 % rng('default')
-MC = 1;           % number of Monte Carlo runs
+MC = 10;           % number of Monte Carlo runs
 
 for mc = 1:MC
     mc
@@ -52,4 +52,4 @@ for mc = 1:MC
 end
 
 % save('sim1.mat','Result','GTruth','Measures','model')
-PlotResult(Result(mc), GTruth)
+% PlotResult(Result(mc), GTruth)
