@@ -10,6 +10,7 @@ MC = 1;           % number of Monte Carlo runs
 for mc = 1:MC
     mc
     model       = InitParameters;               % initialize all parameters.
+%     load Scenario3.mat;                         % load the scenario parameters
     GTruth      = GenTruth(model);              % generate ground truth target and observer trajectory
     Measures(mc)    = GenMeas(GTruth, model);   % offline data generation
     

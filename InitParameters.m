@@ -6,7 +6,7 @@
 function model = InitParameters
 
 model.dT        = 20;           % sampling interval (can be changed for asynchronous case)
-model.K         = 66;           % number of scans
+model.K         = 70;           % number of scans
 model.Motion    = 'CV';         % motion model 'CT','CA','CV'
 model.xDim      = 4;            % state vector dimension is specified according to motion model
                                 % 4: 2-D CV, 6: 2-D CA, 6: 3-D CV, 
@@ -30,7 +30,7 @@ model.bt        = model.sigma_vel*[(model.dT^2)/2; model.dT];
 model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT];
 
 %%  Particle Filter parameters
-model.N         = 50000;         % number of particles
+model.N         = 5000;         % number of particles
 model.Nthr      = model.N*.5;    % resampling threshold
 
 %%  initialization parameters
@@ -47,19 +47,19 @@ model.pD        = 1;                % probability of detection (will be varied)-
 
 %%  Target definition
 model.knots     = 0.5144;
-model.xRange    = 17000;                % target initial range (meters)
-model.xSpeed    = 22*model.knots;             % initial speed
-model.xCourse   = 315;
-model.B0        = 180;                  % initial bearing
+model.xRange    = 7000;                % target initial range (meters)
+model.xSpeed    = 15*model.knots;             % initial speed
+model.xCourse   = 255;
+model.B0        = 46;                  % initial bearing
 
 %%  Observer definition
-model.oSpeed    = 6*model.knots;
-model.oCourse   = 280;
+model.oSpeed    = 4.5*model.knots;
+model.oCourse   = 30;
 
 %%  Observer parameters
-model.manStart  = [27];               % starting index of ownship maneuver
-model.manEnd    = [28];               % ending index of ownship maneuver
-model.TurnTo    = [190];
+model.manStart  = [15];               % starting index of ownship maneuver
+model.manEnd    = [16];               % ending index of ownship maneuver
+model.TurnTo    = [305];
 
 
 % model.S = @(xOk, xOk_1) [   xOk(1) - xOk_1(1) - model.dT*xOk_1(2); ...
