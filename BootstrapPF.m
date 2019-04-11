@@ -13,7 +13,7 @@
 
 function [xhat, xk_new, wk_new] = BootstrapPF(xk_prev, wk_prev, zk, Uk, own, model)
 
-Ns      = size(xk_prev,2);                              % number of particles
+N      = size(xk_prev,2);                              % number of particles
 
 %%  prediction
 Xki     = SampleParticles(xk_prev, Uk, model);          % predicted particles
@@ -26,15 +26,16 @@ xhat    = Xki*wk_pred;
 Neff = 1/(sum(wk_pred.^2))
 % Neff = -sum(wk_pred.*log(wk_pred)./log(Ns));             % entropy of weights
 if isnan(Neff)
-    wk_pred = ones(1,Ns)/Ns;
+    wk_pred = ones(N,1)/N;
 end
 
 if Neff <= model.Nthr
-    
+    %% regularization
+    Sk = wk_pred'.*(Xki-xhat)*(Xki-xhat)';
     %% update
     xk_new = Resampling(Xki, wk_pred, model);               % updated particles
-    wk_new = ones(1,Ns)/Ns;                                 % new particles (uniform)
-
+    wk_new = ones(N,1)/N;                                   % new particles (uniform)
+    xk_new = Regularization(xk_new, Sk, N);               % Regularization
 else
     xk_new = Xki;
     wk_new = wk_pred;

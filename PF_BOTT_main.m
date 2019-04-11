@@ -15,12 +15,9 @@ for mc = 1:MC
     
     %%  particle, weight, state initialization
     zk_1        = Measures(mc).Z{1};            % first measurement
-    R           = 10000;                        % (meters) particle initial range
-    Course      = pi + zk_1;                    % radians
-    Speed       = 4;                            % knots
     own         = GTruth.Ownship(:,1);
     
-    Xki     = initParticles(R, Course, Speed, own, zk_1, model.N, model);     % initial particles
+    Xki     = initParticles(own, model);     % initial particles
     Wki     = ones(model.N,1)/model.N;              % initial, uniform weights
     %%  output variable initialization
     Result(mc).X    = cell(model.K, 1);             % estimated state variable  
@@ -35,14 +32,14 @@ for mc = 1:MC
         zvec(:,k) = zk;
         own = GTruth.Ownship(:,k);                  % previous ownship state
         Uk = 0;                                     % control input, not used for now
-        [xhat, xk_new, wk_new] = BootstrapPF(Xki, Wki,zk, Uk, own, model);
+        [xhat, xk_new, wk_new] = BootstrapPF(Xki, Wki, zk, Uk, own, model);
         
         %% update variables for next cycle
         Xki     = xk_new;
-        zk_1    = zk;
+        Wki     = wk_new;
         
         %%  collect the estimation results
-        P   = (xk_new-xhat)*(xk_new-xhat)'./(model.N);          % estimation covariance
+        P   = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';              % estimation covariance
         Result(mc).X{k} = xhat;                                 % corresponds to sum(xk*wk)
         Result(mc).P{k} = P;                                    % estimated state covariance
         Result(mc).Particles{k} = Xki;                          % save particles if necessary

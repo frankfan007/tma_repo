@@ -27,9 +27,9 @@ switch ProblemDim
 end
 
 z = h(Xk-own);      % transformed measurements
-if z < 0
-    z = z+2*pi;
-end
+idx = find(z<0);
+z(idx) = z(idx) + 2*pi;
+
 Theta = z;          % true bearings
 if IsNoisy
     Zk = z + sigma_w*randn(wDim, 1);

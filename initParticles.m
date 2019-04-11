@@ -7,24 +7,26 @@
 
 %%  other initialization schemes can be implemented, i.e. Metropolis-Hastings algorithm.
 
-function x_init = initParticles(R_in, C_in, S_in, own, Theta1, Np, model)
+function x_init = initParticles(own, model)
 
-knot = 0.5144;
-Rsigma = 2000;
-Ssigma = 2*knot;
-Csigma = pi/sqrt(12);
+knot    = 0.5144;
+Np      = model.N;
+% Rsigma = 2000;
+% Ssigma = 2*knot;
+% Csigma = pi/sqrt(12);
 %%  measurement driven initialization: 
 
 %% ------------------------------------
-Rs = normrnd(R_in, Rsigma, 1,Np);
-Ss = normrnd(S_in, Ssigma, 1,Np);
-Cs = normrnd(C_in, Csigma, 1,Np);
-% Rs = (R_in(2)-R_in(1))*rand(1,Np);                  % uniformly distributed range
-% Cs = (C_in(2)-C_in(1))*rand(1,Np);                  % uniformly distributed course
-% Ss = (S_in(2)-S_in(1))*rand(1,Np);                  % uniformly distributed speed
+R_in = model.Rinit;
+C_in = model.Cinit;
+S_in = model.Sinit;
+Rs = (R_in(2)-R_in(1))*rand(1,Np);                  % uniformly distributed range
+Cs = (C_in(2)-C_in(1))*rand(1,Np);                  % uniformly distributed course
+Ss = (S_in(2)-S_in(1))*rand(1,Np);                  % uniformly distributed speed
 
-x = Rs.*sin(Theta1);
-y = Rs.*cos(Theta1);
+Theta1 = model.B0*pi/180;
+x = Rs.*sin(Theta1) + own(1);
+y = Rs.*cos(Theta1) + own(3);
 vx = Ss.*sin(Cs);
 vy = Ss.*cos(Cs);
 x_init = [x; vx; y; vy];
