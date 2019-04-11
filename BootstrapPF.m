@@ -35,7 +35,7 @@ if Neff <= model.Nthr
     %% update
     xk_new = Resampling(Xki, wk_pred, model);               % updated particles
     wk_new = ones(N,1)/N;                                   % new particles (uniform)
-    xk_new = Regularization(xk_new, Sk, N);               % Regularization
+    xk_new = Regularization(xk_new, Sk, N);                 % Regularization
 else
     xk_new = Xki;
     wk_new = wk_pred;
