@@ -17,7 +17,7 @@ N      = size(xk_prev,2);                              % number of particles
 
 %%  prediction
 Xki     = SampleParticles(xk_prev, Uk, model);          % predicted particles
-Wki     = SampleWeights(Xki, wk_prev, zk, own, model);  % predicted weights
+[Wki, ~] = SampleWeights(Xki, wk_prev, zk, own, model);  % predicted weights
 wk_pred = Wki/sum(Wki);                                 % normalized weights
 
 xhat    = Xki*wk_pred;
@@ -25,9 +25,9 @@ xhat    = Xki*wk_pred;
 %% resampling (should be another function)- implement alternative resampling strategies
 Neff = 1/(sum(wk_pred.^2))
 % Neff = -sum(wk_pred.*log(wk_pred)./log(Ns));             % entropy of weights
-if isnan(Neff)
-    wk_pred = ones(N,1)/N;
-end
+% if isnan(Neff)
+%     wk_pred = ones(N,1)/N;
+% end
 
 if Neff <= model.Nthr
     %% regularization
@@ -35,7 +35,14 @@ if Neff <= model.Nthr
     %% update
     xk_new = Resampling(Xki, wk_pred, model);               % updated particles
     wk_new = ones(N,1)/N;                                   % new particles (uniform)
+%     %% MCMC acceptance probability
+%     Xki_star = Regularization(xk_new, Sk, N);               % Regularization
+%     LofXki_star = computeLikelihood(zk, Xki_star, own, model)';     % likelihood of regularized particles
+%     MHAratio = (LofXki_star./LofXki);
+%     alpha = min([1, MHAratio]);
+%     if alpha >= rand
     xk_new = Regularization(xk_new, Sk, N);                 % Regularization
+%     end
 else
     xk_new = Xki;
     wk_new = wk_pred;

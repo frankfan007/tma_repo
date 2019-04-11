@@ -30,14 +30,14 @@ model.bt        = model.sigma_vel*[(model.dT^2)/2; model.dT];
 model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT];
 
 %%  Particle Filter parameters
-model.N         = 5000;         % number of particles
-model.Nthr      = model.N*.5;    % resampling threshold
+model.N         = 100000;         % number of particles
+model.Nthr      = model.N*.9;    % resampling threshold
 
 %%  initialization parameters
 knot = 0.5144;
-model.Rinit     = [1000 25000];
+model.Rinit     = [1000 20000];
 model.Cinit     = [0 2*pi];
-model.Sinit     = [knot 35*knot];
+model.Sinit     = [knot 25*knot];
 
 %%  Clutter parameters
 model.range_cz  = [-pi/2, pi/2];    % clutter range
@@ -60,10 +60,4 @@ model.oCourse   = 30;
 model.manStart  = [15];               % starting index of ownship maneuver
 model.manEnd    = [16];               % ending index of ownship maneuver
 model.TurnTo    = [305];
-
-
-% model.S = @(xOk, xOk_1) [   xOk(1) - xOk_1(1) - model.dT*xOk_1(2); ...
-%                             xOk(2) - xOk_1(2);
-%                             xOk(3) - xOk_1(3) - model.dT*xOk_1(4); ...
-%                             xOk(4) - xOk_1(4) ];
 

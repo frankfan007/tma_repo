@@ -8,17 +8,17 @@ Ns = model.N;       % number of particles
 
 
 %% Greedy Approach
-tau = .8;           % 0 < tau < 1
+% tau = .8;           % 0 < tau < 1
 % xk_new = GreedyApproach(xki, wk_pred, tau, Ns);
 
 %% MSV approach (deterministic)
-xk_new = MSVresampling(xki, wk_pred, Ns);
+% xk_new = MSVresampling(xki, wk_pred, Ns);
 
-% resampling with replacement
+% resampling with replacement (Multinomial)
 % idx = randsample(length(wk_pred), Ns, true, wk_pred);   % uniform resampling w.r.t. normalized weights.
 % xk_new  = xki(:,idx);                                   % updated particles
 
 % systematic resampling
-% xk_new = Systematic(xki, wk_pred, Ns);
+xk_new = Systematic(xki, wk_pred, Ns);
 
 end

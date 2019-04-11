@@ -4,13 +4,16 @@
 
 clc; clearvars; close all;
 
-% rng('default')
+rng('default')
+% s = rng(1,'twister');
+% rng(s)
 MC = 1;           % number of Monte Carlo runs
 
 for mc = 1:MC
     mc
-    model       = InitParameters;               % initialize all parameters.
-%     load Scenario3.mat;                         % load the scenario parameters
+    load Scenario1.mat;                         % load the scenario parameters
+    model.N = 1e4;
+%     model       = InitParameters;               % initialize all parameters.
     GTruth      = GenTruth(model);              % generate ground truth target and observer trajectory
     Measures(mc)    = GenMeas(GTruth, model);   % offline data generation
     

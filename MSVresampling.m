@@ -1,6 +1,7 @@
 function xk_new = MSVresampling(xki, wk_pred, Ns)
 
 xk_new = zeros(size(xki));
+wk_pred = wk_pred/sum(wk_pred);         % normalize the weights (just in case)
 
 n = 0;
 Nmt = floor(Ns*wk_pred);

@@ -14,8 +14,6 @@ zk_hat  = MeasFcn(xki, own, model, true);       % predicted measurements, withou
 R       = model.R;                          % measurement covariance matrix
 invR    = R^(-1);                           % inverse of the measurement covariance (ignores the correlation)
 zdiff   = repmat(zk,[1 size(zk_hat,2)])-zk_hat;
-% idx = find(zdiff<0);
-% zdiff(idx) = zdiff(idx) + 2*pi;
 expo    = sum((invR*(zdiff.^2)),1);
 gk_z    = exp(-expo/2-log(2*pi*det(R)));    % likelihood value
 
