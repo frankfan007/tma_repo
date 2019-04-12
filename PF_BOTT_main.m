@@ -4,24 +4,23 @@
 
 clc; clearvars; close all;
 
-rng('default')
+% rng('default')
 % s = rng(1,'twister');
 % rng(s)
 MC = 1;           % number of Monte Carlo runs
 
 for mc = 1:MC
     mc
-    load Scenario1.mat;                         % load the scenario parameters
-    model.N = 1e4;
-%     model       = InitParameters;               % initialize all parameters.
-    GTruth      = GenTruth(model);              % generate ground truth target and observer trajectory
-    Measures(mc)    = GenMeas(GTruth, model);   % offline data generation
+%     load Scenario3_p.mat;                             % load the scenario parameters
+    model       = InitParameters('Scenario3.mat');                 % initialize all parameters.
+    GTruth      = GenTruth(model);                  % generate ground truth target and observer trajectory
+    Measures(mc)    = GenMeas(GTruth, model);       % offline data generation
     
     %%  particle, weight, state initialization
-    zk_1        = Measures(mc).Z{1};            % first measurement
+    zk_1        = Measures(mc).Z{1};                % first measurement
     own         = GTruth.Ownship(:,1);
     
-    Xki     = initParticles(own, model);     % initial particles
+    Xki     = initParticles(own, model);            % initial particles
     Wki     = ones(model.N,1)/model.N;              % initial, uniform weights
     %%  output variable initialization
     Result(mc).X    = cell(model.K, 1);             % estimated state variable  
@@ -30,9 +29,9 @@ for mc = 1:MC
     Result(mc).Particles{1} = Xki; 
     
     zvec(:,1) = zk_1;
-    for k = 2:model.K       % total number of scans
+    for k = 2:model.K                               % total number of scans
         %     refresh;
-        zk = Measures(mc).Z{k};                         % current measurement
+        zk = Measures(mc).Z{k};                     % current measurement
         zvec(:,k) = zk;
         own = GTruth.Ownship(:,k);                  % previous ownship state
         Uk = 0;                                     % control input, not used for now
@@ -43,7 +42,7 @@ for mc = 1:MC
         Wki     = wk_new;
         
         %%  collect the estimation results
-        P   = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';              % estimation covariance
+        P   = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';            % estimation covariance
         Result(mc).X{k} = xhat;                                 % corresponds to sum(xk*wk)
         Result(mc).P{k} = P;                                    % estimated state covariance
         Result(mc).Particles{k} = Xki;                          % save particles if necessary
@@ -52,5 +51,6 @@ for mc = 1:MC
     
 end
 
-% save('sim1.mat','Result','GTruth','Measures','model')
-PlotResult(Result(mc), GTruth)
+EvaluatePF(GTruth, Result, model, MC)
+
+

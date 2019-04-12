@@ -1,8 +1,12 @@
-function PlotResult(Result, GTruth)
+function PlotResult(Result, GTruth, MC)
 
-Xgt     = cell2mat(GTruth.X');
-Xest    = cell2mat(Result.X');
 Own     = GTruth.Ownship;
+Xgt     = cell2mat(GTruth.X');
+for mc = 1:MC
+    Xest(:,:,mc) = cell2mat(Result(mc).X');
+end
+Xest = mean(Xest,3);            % monte carlo mean
+
 
 figure,
 plot(Own(1,1), Own(3,1),'ko'), hold on
@@ -16,7 +20,7 @@ scatter(Xgt(1,end), Xgt(3,end), 'bx')
 plot(Xest(1,:), Xest(3,:),'r.-');
 % Part = Result.Particles{1};
 % h = scatter(Part(1,:), Part(3,:),'.g');
-% % 
+% %
 % for i = 2:size(Xgt,2)
 %     refreshdata
 %     drawnow
