@@ -9,7 +9,7 @@
 %                       strategy
 
 
-function Xki = SampleParticles(xk_1, Uk, model)
+function Xki = SampleParticles(xk_1, model)
 
 %%  qk -> Markov density
 Xki = MarkovDensity(model, xk_1);

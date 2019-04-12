@@ -8,7 +8,7 @@ function model = InitParameters(ScenarioFile)
 load(ScenarioFile)
 
 model.dT        = 20;           % sampling interval (can be changed for asynchronous case)
-model.K         = 90;           % number of scans
+model.K         = 45;           % number of scans
 model.Motion    = 'CV';         % motion model 'CT','CA','CV'
 model.xDim      = 4;            % state vector dimension is specified according to motion model
                                 % 4: 2-D CV, 6: 2-D CA, 6: 3-D CV, 

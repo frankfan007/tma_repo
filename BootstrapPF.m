@@ -1,33 +1,35 @@
-%%  Hasan Hüseyin Sönmez - 17.09.2018
-%   Bootstrap type Particle filter
-%   with sequential importance sampling & resampling (uniform)
+%%  Hasan Hüseyin Sönmez - 12.04.2019
 
-%%  Input:  
-%           * particles from previous cycle (xk_prev)
-%           * new measurements (zk)
-%           * PF parameter file (PFparams)
+
+%%  Input: 
+%           * k     : current time index
+%           * Tracks: struct containing:
+%                       * Particles,
+%                       * Estimated state (weighted sum of particles)
+%                       * Weights
+%           * zk    : new measurements
+%           * own   : current ownship state (4x1)
+%           * model : struct for model and algorithm parameters
 %%  Output:
-%           * particles of the new cycle (xk_new).
-%           * new particle weights (wk_new).
+%           * Tracks : struct updated with recent parameters
 
 
-function [xhat, xk_new, wk_new] = BootstrapPF(xk_prev, wk_prev, zk, Uk, own, model)
+function Tracks = BootstrapPF(k, Tracks, zk, own, model)
 
-N      = size(xk_prev,2);                              % number of particles
+N      = model.N;                              % number of particles
 
+xk_prev = Tracks.Particles{k-1};
+wk_prev = Tracks.Wk{k-1};
 %%  prediction
-Xki     = SampleParticles(xk_prev, Uk, model);          % predicted particles
-[Wki, ~] = SampleWeights(Xki, wk_prev, zk, own, model);  % predicted weights
-wk_pred = Wki/sum(Wki);                                 % normalized weights
+Xki     = SampleParticles(xk_prev, model);                  % predicted particles
+[Wki, ~] = SampleWeights(Xki, wk_prev, zk, own, model);     % predicted weights
+wk_pred = Wki/sum(Wki);                                     % normalized weights
 
 xhat    = Xki*wk_pred;
 
 %% resampling (should be another function)- implement alternative resampling strategies
-Neff = 1/(sum(wk_pred.^2))
+Neff = 1/(sum(wk_pred.^2));
 % Neff = -sum(wk_pred.*log(wk_pred)./log(Ns));             % entropy of weights
-% if isnan(Neff)
-%     wk_pred = ones(N,1)/N;
-% end
 
 if Neff <= model.Nthr
     %% regularization
@@ -35,20 +37,17 @@ if Neff <= model.Nthr
     %% update
     xk_new = Resampling(Xki, wk_pred, model);               % updated particles
     wk_new = ones(N,1)/N;                                   % new particles (uniform)
-%     %% MCMC acceptance probability
-%     Xki_star = Regularization(xk_new, Sk, N);               % Regularization
-%     LofXki_star = computeLikelihood(zk, Xki_star, own, model)';     % likelihood of regularized particles
-%     MHAratio = (LofXki_star./LofXki);
-%     alpha = min([1, MHAratio]);
-%     if alpha >= rand
     xk_new = Regularization(xk_new, Sk, N);                 % Regularization
-%     end
 else
     xk_new = Xki;
     wk_new = wk_pred;
 end
 
+P   = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';                % estimation covariance
 
-
+Tracks.X{k}         = xhat;
+Tracks.Particles{k} = xk_new;
+Tracks.Wk{k}        = wk_new;
+Tracks.P{k}         = P;
 
 end

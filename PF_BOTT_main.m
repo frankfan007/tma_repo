@@ -11,46 +11,24 @@ MC = 1;           % number of Monte Carlo runs
 
 for mc = 1:MC
     mc
-%     load Scenario3_p.mat;                             % load the scenario parameters
-    model       = InitParameters('Scenario3.mat');                 % initialize all parameters.
-    GTruth      = GenTruth(model);                  % generate ground truth target and observer trajectory
-    Measures(mc)    = GenMeas(GTruth, model);       % offline data generation
+    model           = InitParameters('Scenario3.mat');                  % initialize all parameters.
+    GTruth          = GenTruth(model);                                  % generate ground truth target and observer trajectory
+    Measures(mc)    = GenMeas(GTruth, model);                           % offline data generation
     
     %%  particle, weight, state initialization
-    zk_1        = Measures(mc).Z{1};                % first measurement
-    own         = GTruth.Ownship(:,1);
-    
-    Xki     = initParticles(own, model);            % initial particles
-    Wki     = ones(model.N,1)/model.N;              % initial, uniform weights
-    %%  output variable initialization
-    Result(mc).X    = cell(model.K, 1);             % estimated state variable  
-    Result(mc).X{1} = Xki*Wki;                      % initial target state
-    Result(mc).P{1} = Xki*Xki'./model.N;            % initial state covariance
-    Result(mc).Particles{1} = Xki; 
-    
-    zvec(:,1) = zk_1;
-    for k = 2:model.K                               % total number of scans
+    own             = GTruth.Ownship(:,1);
+    PFResult        = initializeFilter(model, own);
+    for k = 2:model.K                                                   % total number of scans
         %     refresh;
-        zk = Measures(mc).Z{k};                     % current measurement
-        zvec(:,k) = zk;
-        own = GTruth.Ownship(:,k);                  % previous ownship state
-        Uk = 0;                                     % control input, not used for now
-        [xhat, xk_new, wk_new] = BootstrapPF(Xki, Wki, zk, Uk, own, model);
-        
-        %% update variables for next cycle
-        Xki     = xk_new;
-        Wki     = wk_new;
-        
-        %%  collect the estimation results
-        P   = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';            % estimation covariance
-        Result(mc).X{k} = xhat;                                 % corresponds to sum(xk*wk)
-        Result(mc).P{k} = P;                                    % estimated state covariance
-        Result(mc).Particles{k} = Xki;                          % save particles if necessary
-        
+        k
+        zk = Measures(mc).Z{k};                                         % current measurement
+        own = GTruth.Ownship(:,k);                                      % previous ownship state
+        PFResult = BootstrapPF(k, PFResult, zk, own, model);            % apply particle filter
     end     % simulation
     
 end
 
-EvaluatePF(GTruth, Result, model, MC)
+% PlotResult(PFResult, GTruth, MC)
+EvaluatePF(GTruth, PFResult, model, MC)
 
 
