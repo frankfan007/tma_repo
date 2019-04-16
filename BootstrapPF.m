@@ -16,10 +16,18 @@
 
 function Tracks = BootstrapPF(k, Tracks, zk, own, model)
 
-N      = model.N;                              % number of particles
-
-xk_prev = Tracks.Particles{k-1};
-wk_prev = Tracks.Wk{k-1};
+if isempty(Tracks)
+    %% initialization for first iteration
+    Tracks = initializeFilter(model, own);
+%     xk_prev = Tracks.Particles{k};
+%     wk_prev = Tracks.Wk{k};
+% else
+%     xk_prev = Tracks.Particles{k-1};
+%     wk_prev = Tracks.Wk{k-1};
+end
+    xk_prev = Tracks.Particles{k-1};
+    wk_prev = Tracks.Wk{k-1};
+N      = model.N;                                           % number of particles
 %%  prediction
 Xki     = SampleParticles(xk_prev, model);                  % predicted particles
 [Wki, ~] = SampleWeights(Xki, wk_prev, zk, own, model);     % predicted weights
@@ -35,8 +43,7 @@ if Neff <= model.Nthr
     %% regularization
     Sk = wk_pred'.*(Xki-xhat)*(Xki-xhat)';
     %% update
-    xk_new = Resampling(Xki, wk_pred, model);               % updated particles
-    wk_new = ones(N,1)/N;                                   % new particles (uniform)
+    [xk_new, wk_new] = Resampling(Xki, wk_pred, model);     % updated particles
     xk_new = Regularization(xk_new, Sk, N);                 % Regularization
 else
     xk_new = Xki;

@@ -2,11 +2,10 @@
 %   Resampling function
 
 
-function xk_new = Resampling(xki, wk_pred, model)
+function [xk_new, wk_new] = Resampling(xki, wk_pred, model)
 
 Ns = model.N;       % number of particles
-
-
+wk_new = ones(Ns,1)/Ns;                                   % new particles (uniform)
 %% Greedy Approach
 % tau = .8;           % 0 < tau < 1
 % xk_new = GreedyApproach(xki, wk_pred, tau, Ns);

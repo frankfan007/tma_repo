@@ -11,21 +11,21 @@ MC = 1;           % number of Monte Carlo runs
 
 for mc = 1:MC
     mc
-    model           = InitParameters('Scenario3.mat');                  % initialize all parameters.
+    model           = InitParameters('Scenario2.mat');                  % initialize all parameters.
     GTruth          = GenTruth(model);                                  % generate ground truth target and observer trajectory
     Measures(mc)    = GenMeas(GTruth, model);                           % offline data generation
     
     %%  particle, weight, state initialization
-    own             = GTruth.Ownship(:,1);
-    PFResult        = initializeFilter(model, own);
+    PFtracks        = struct([]);                                       % empty list
     for k = 2:model.K                                                   % total number of scans
         %     refresh;
-        k
+        k;
         zk = Measures(mc).Z{k};                                         % current measurement
-        own = GTruth.Ownship(:,k);                                      % previous ownship state
-        PFResult = BootstrapPF(k, PFResult, zk, own, model);            % apply particle filter
+        own = GTruth.Ownship(:,k);                                      % previous ownship position (only)
+        PFtracks = BootstrapPF(k, PFtracks, zk, own, model);            % apply particle filter
     end     % simulation
     
+    PFResult(mc) = PFtracks;
 end
 
 % PlotResult(PFResult, GTruth, MC)

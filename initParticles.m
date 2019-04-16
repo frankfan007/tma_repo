@@ -9,12 +9,10 @@
 
 function x_init = initParticles(own, model)
 
-knot    = 0.5144;
 Np      = model.N;
+% knot    = 0.5144;
 % Rsigma = 2000;
 % Ssigma = 2*knot;
-% Csigma = pi/sqrt(12);
-%%  measurement driven initialization: 
 
 %% ------------------------------------
 R_in = model.Rinit;
@@ -30,11 +28,6 @@ y = Rs.*cos(Theta1) + own(3);
 vx = Ss.*sin(Cs);
 vy = Ss.*cos(Cs);
 x_init = [x; vx; y; vy];
-% %% random initialization around a given point
-% x_init = zeros(model.xDim, Np);
-% Qsqrt = sqrt(diag(Q));                            % square-root of process noise
-% for i = 1:Np
-%     x_init(:,i) = m(:,i) + Qsqrt.*randn(model.xDim,1);
-% end
+
 
 end

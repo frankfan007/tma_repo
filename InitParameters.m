@@ -8,7 +8,7 @@ function model = InitParameters(ScenarioFile)
 load(ScenarioFile)
 
 model.dT        = 20;           % sampling interval (can be changed for asynchronous case)
-model.K         = 45;           % number of scans
+% model.K         = 90;           % number of scans
 model.Motion    = 'CV';         % motion model 'CT','CA','CV'
 model.xDim      = 4;            % state vector dimension is specified according to motion model
                                 % 4: 2-D CV, 6: 2-D CA, 6: 3-D CV, 
@@ -21,7 +21,7 @@ model.wDim      = model.zDim;   % measurement noise vector size
 
 %%  Noise parameters
 model.sigma_w   = diag([.5*pi/180]);                 % measurement noise std (in rad)
-model.sigma_v   = .05;                              % process noise intensity
+model.sigma_v   = .1;                              % process noise intensity
 model.Qk        = model.sigma_v*kron(eye(model.PDim),[(model.dT^3)/3 (model.dT^2)/2; (model.dT^2)/2 model.dT]);
 model.R         = 2*model.sigma_w*model.sigma_w';     % mesurement error covariance
 
@@ -33,7 +33,7 @@ model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT
 
 %%  Particle Filter parameters
 model.N         = 1e5;         % number of particles
-model.Nthr      = model.N*.5;    % resampling threshold
+model.Nthr      = model.N*.7;    % resampling threshold
 
 %%  initialization parameters
 model.Rinit     = [1000 20000];
