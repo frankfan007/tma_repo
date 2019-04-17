@@ -1,7 +1,7 @@
 function xk_new = Regularization(Xki, Sk, N)
 
 nx = size(Xki, 1);          % state dimension
-A = (4/(nx+2))^(1+nx);
+A = (4/(nx+2))^(1/(4+nx));
 bw = A*(N^(-1/(4+nx)));
 
 Dk = chol(Sk,'lower');
