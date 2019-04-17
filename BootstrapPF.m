@@ -1,7 +1,7 @@
 %%  Hasan Hüseyin Sönmez - 12.04.2019
 
 
-%%  Input: 
+%%  Input:
 %           * k     : current time index
 %           * Tracks: struct containing:
 %                       * Particles,
@@ -19,14 +19,10 @@ function Tracks = BootstrapPF(k, Tracks, zk, own, model)
 if isempty(Tracks)
     %% initialization for first iteration
     Tracks = initializeFilter(model, own);
-%     xk_prev = Tracks.Particles{k};
-%     wk_prev = Tracks.Wk{k};
-% else
-%     xk_prev = Tracks.Particles{k-1};
-%     wk_prev = Tracks.Wk{k-1};
 end
-    xk_prev = Tracks.Particles{k-1};
-    wk_prev = Tracks.Wk{k-1};
+
+xk_prev = Tracks.Particles{k-1};
+wk_prev = Tracks.Wk{k-1};
 N      = model.N;                                           % number of particles
 %%  prediction
 Xki     = SampleParticles(xk_prev, model);                  % predicted particles

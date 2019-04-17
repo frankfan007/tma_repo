@@ -20,8 +20,8 @@ model.vDim      = model.xDim;   % process noise vector size
 model.wDim      = model.zDim;   % measurement noise vector size
 
 %%  Noise parameters
-model.sigma_w   = diag([.5*pi/180]);                 % measurement noise std (in rad)
-model.sigma_v   = .1;                              % process noise intensity
+model.sigma_w   = diag([.5*pi/180]);               % measurement noise std (in rad)
+model.sigma_v   = 6.4e-10;                              % process noise intensity
 model.Qk        = model.sigma_v*kron(eye(model.PDim),[(model.dT^3)/3 (model.dT^2)/2; (model.dT^2)/2 model.dT]);
 model.R         = 2*model.sigma_w*model.sigma_w';     % mesurement error covariance
 

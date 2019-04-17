@@ -85,7 +85,7 @@ switch MotionModel
 end
 
 if IsNoisy
-    Xnew = X + ModelParams.sigma_v*randn(size(X));       % process noise with scale
+    Xnew = X + sqrt(ModelParams.Qk)*randn(size(X));       % process noise with scale
 else
     Xnew = X;
 end
