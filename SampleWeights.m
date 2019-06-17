@@ -10,7 +10,7 @@
 
 function [Wki, Likelihood] = SampleWeights(xki, wki_prev, zk, own, model)
 
-Likelihood  = computeLikelihood(zk, xki, own, model)';        % likelihood value as the predicted weight
+Likelihood  = computeLikelihood(zk, xki, own, model)'+eps;        % likelihood value as the predicted weight
 Wki         = Likelihood.*wki_prev;
 
 

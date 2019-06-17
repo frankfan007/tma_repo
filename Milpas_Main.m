@@ -4,31 +4,29 @@
 
 clc; clearvars; close all;
 
-% rng('default')
-% s = rng(1,'twister');
-% rng(s)
-MC = 1;           % number of Monte Carlo runs
+load data.mat;
+MC = 1;
 
 for mc = 1:MC
     mc
     model           = InitParameters('Scenario3.mat');                  % initialize all parameters.
-    GTruth          = GenTruth(model);                                  % generate ground truth target and observer trajectory
-    Measures(mc)    = GenMeas(GTruth, model);                           % offline data generation
     
+    model.K = length(pMilpas.bearing);
+    model.B0 = pMilpas.bearing(1)*pi/180;
     %%  particle, weight, state initialization
     PFtracks        = struct([]);                                       % empty list
     for k = 2:model.K                                                   % total number of scans
-        %     refresh;
+        %     refresh
         k;
-        zk = Measures(mc).Z{k};                                         % current measurement
-        own = GTruth.Ownship(:,k);                                      % previous ownship position (only)
+        zk = (pi/180)*pMilpas.bearing(k);                               % current measurement
+        own = [pOwnship.X(k), pOwnship.Speed(k)*sind(pOwnship.Course(k)), pOwnship.Y(k), pOwnship.Speed(k)*cosd(pOwnship.Course(k))]';                    % previous ownship position (only)
         PFtracks = BootstrapPF(k, PFtracks, zk, own, model);            % apply particle filter
     end     % simulation
     
     PFResult(mc) = PFtracks;
 end
 
-PlotResult(PFResult, GTruth, MC)
-EvaluatePF(GTruth, PFResult, model, MC)
+PlotResult(PFtracks, pOwnship, pTargetGPS, MC)
+% EvaluatePF(GTruth, PFResult, model, MC)
 
 

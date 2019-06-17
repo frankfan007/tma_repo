@@ -1,23 +1,23 @@
-function PlotResult(Result, GTruth, MC)
+function PlotResult(PFResult, GTown, GTx, MC)
 
-Own     = GTruth.Ownship;
-Xgt     = cell2mat(GTruth.X');
+% Own     = GTruth.Ownship;
+% Xgt     = cell2mat(GTruth.X');
 for mc = 1:MC
-    Xest(:,:,mc) = cell2mat(Result(mc).X');
+    Xest(:,:,mc) = cell2mat(PFResult(mc).X');
 end
 Xest = mean(Xest,3);            % monte carlo mean
 
 
 figure,
-plot(Own(1,1), Own(3,1),'ko'), hold on
-plot(Own(1,2:end-1), Own(3,2:end-1),'k-')
-plot(Own(1,end), Own(3,end),'kx')
-scatter(Xgt(1,1), Xgt(3,1), 'bo')
-scatter(Xgt(1,2:end-1), Xgt(3,2:end-1), 200, 'b.')
-scatter(Xgt(1,end), Xgt(3,end), 'bx')
+plot(GTown.X(1), GTown.Y(1),'ko'), hold on
+plot(GTown.X(2:end-1), GTown.Y(2:end-1),'k-')
+plot(GTown.X(end), GTown.Y(end),'kx')
+scatter(GTx.X(1), GTx.Y(1), 'bo')
+scatter(GTx.X(2:end-1), GTx.Y(2:end-1), 200, 'b.')
+scatter(GTx.X(end), GTx.Y(end), 'bx')
 
 % first point
-plot(Xest(1,:), Xest(3,:),'r.-');
+plot(Xest(1,1:50), Xest(3,1:50),'r.-');
 % Part = Result.Particles{1};
 % h = scatter(Part(1,:), Part(3,:),'.g');
 % %

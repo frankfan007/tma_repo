@@ -10,9 +10,6 @@
 function x_init = initParticles(own, model)
 
 Np      = model.N;
-% knot    = 0.5144;
-% Rsigma = 2000;
-% Ssigma = 2*knot;
 
 %% ------------------------------------
 R_in = model.Rinit;
