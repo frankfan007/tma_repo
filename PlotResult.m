@@ -17,7 +17,7 @@ scatter(GTx.X(2:end-1), GTx.Y(2:end-1), 200, 'b.')
 scatter(GTx.X(end), GTx.Y(end), 'bx')
 
 % first point
-plot(Xest(1,1:50), Xest(3,1:50),'r.-');
+plot(Xest(1,:), Xest(3,:),'r.-');
 % Part = Result.Particles{1};
 % h = scatter(Part(1,:), Part(3,:),'.g');
 % %

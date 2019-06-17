@@ -2,7 +2,7 @@
 
 % First Particle filter implementation for bearings-only tracking problem
 
-clc; clearvars; close all;
+clc; clearvars; %close all;
 
 load data.mat;
 MC = 1;
@@ -12,7 +12,7 @@ for mc = 1:MC
     model           = InitParameters('Scenario3.mat');                  % initialize all parameters.
     
     model.K = length(pMilpas.bearing);
-    model.B0 = pMilpas.bearing(1)*pi/180;
+    model.B0 = pMilpas.bearing(1);
     %%  particle, weight, state initialization
     PFtracks        = struct([]);                                       % empty list
     for k = 2:model.K                                                   % total number of scans
