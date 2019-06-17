@@ -7,7 +7,7 @@ function model = InitParameters(ScenarioFile)
 
 load(ScenarioFile)
 
-model.dT        = 30;           % sampling interval (can be changed for asynchronous case)
+model.dT        = 1;           % sampling interval (can be changed for asynchronous case)
 % model.K         = 90;           % number of scans
 model.Motion    = 'CV';         % motion model 'CT','CA','CV'
 model.xDim      = 4;            % state vector dimension is specified according to motion model
@@ -36,9 +36,9 @@ model.N         = 1e4;         % number of particles
 model.Nthr      = model.N*.33;    % resampling threshold
 
 %%  initialization parameters
-model.Rinit     = [100 30000];
+model.Rinit     = [100 25000];
 model.Cinit     = [0 2*pi-0.0001];
-model.Sinit     = [model.knots 30*model.knots];
+model.Sinit     = [5*model.knots 25*model.knots];
 
 %%  Clutter parameters
 model.range_cz  = [-pi/2, pi/2];    % clutter range

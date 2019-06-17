@@ -2,6 +2,7 @@ function PlotResult(PFResult, GTown, GTx, MC)
 
 % Own     = GTruth.Ownship;
 % Xgt     = cell2mat(GTruth.X');
+Xest = zeros(4,800,10);
 for mc = 1:MC
     Xest(:,:,mc) = cell2mat(PFResult(mc).X');
 end

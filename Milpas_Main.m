@@ -5,7 +5,7 @@
 clc; clearvars; %close all;
 
 load data.mat;
-MC = 1;
+MC = 10;
 
 for mc = 1:MC
     mc
@@ -26,7 +26,7 @@ for mc = 1:MC
     PFResult(mc) = PFtracks;
 end
 
-PlotResult(PFtracks, pOwnship, pTargetGPS, MC)
+PlotResult(PFResult, pOwnship, pTargetGPS, MC)
 % EvaluatePF(GTruth, PFResult, model, MC)
 
 
