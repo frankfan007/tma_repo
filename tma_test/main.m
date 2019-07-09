@@ -19,23 +19,23 @@ N=2; %karþýlaþtýrýlacak filtre sayýsý
 for k=1:1:param.MonteCarlo
     
     % measured range and bearing with noise
-    [pTarget]=mea(pOGth,pTGth,param,FIELDNOTSET);  
+    [pTarget(k)]=mea(pOGth,pTGth,param,FIELDNOTSET);  
     
     %data gelmemesi durumu
     %[pTarget.NoisyRange,pTarget.NoisyRelBearing]=data_corruption(pTarget.NoisyRange,pTarget.NoisyRelBearing,param,FIELDNOTSET);
     %zaman gecikmesi
     %[pTGth.time]=timedelay(pTarget,pOGth);
    % delta_filter=pTGth.time
-    [pFilter(1).State(:,:,k),pFilter(1).Cov(:,:,:,k)]=Filter_CMKF(pTarget.NoisyRange,pTarget.NoisyRelBearing,param.NS,param.dt,param.sigmaR,param.sigmaphi,param.Q);
+%     [pFilter(1).State(:,:,k),pFilter(1).Cov(:,:,:,k)]=Filter_CMKF(pTarget.NoisyRange,pTarget.NoisyRelBearing,param.NS,param.dt,param.sigmaR,param.sigmaphi,param.Q);
     
-    [pFilter(2).State(:,:,k),pFilter(2).Cov(:,:,:,k)]=Filter_EKF(pTarget.NoisyRange,pTarget.NoisyRelBearing,param.NS,param.dt,param.sigmaR,param.sigmaphi,param.Q);
+%     [pFilter(2).State(:,:,k),pFilter(2).Cov(:,:,:,k)]=Filter_EKF(pTarget.NoisyRange,pTarget.NoisyRelBearing,param.NS,param.dt,param.sigmaR,param.sigmaphi,param.Q);
 
 end
 
-%% evaluation 
-for n=1:N
-    [Result(n).RMSE_pos,Result(n).RMSE_vel,Result(n).ANEES,Result(n).LNEES]=evaluation(pTGth,pOGth,pFilter(n),param);
-    errorplot(Result(n));
-end
-
-  measurementplot(pOGth,pTGth,pTarget);
+% %% evaluation 
+% for n=1:N
+%     [Result(n).RMSE_pos,Result(n).RMSE_vel,Result(n).ANEES,Result(n).LNEES]=evaluation(pTGth,pOGth,pFilter(n),param);
+%     errorplot(Result(n));
+% end
+% 
+%   measurementplot(pOGth,pTGth,pTarget);

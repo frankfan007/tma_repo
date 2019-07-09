@@ -21,15 +21,19 @@ if isempty(Tracks)
     Tracks = initializeFilter(model, own);
 end
 
-xk_prev = Tracks.Particles{k-1};
-wk_prev = Tracks.Wk{k-1};
-N      = model.N;                                           % number of particles
+xk_prev     = Tracks.Particles{k-1};
+wk_prev     = Tracks.Wk{k-1};
+N           = model.N;                                           % number of particles
 %%  prediction
-Xki     = SampleParticles(xk_prev, model);                  % predicted particles
-[Wki, ~] = SampleWeights(Xki, wk_prev, zk, own, model);     % predicted weights
-wk_pred = Wki/sum(Wki);                                     % normalized weights
+Xki         = SampleParticles(xk_prev, model);                  % predicted particles
+[Wki, ~]    = SampleWeights(Xki, wk_prev, zk, own, model);     % predicted weights
+wk_pred     = Wki/sum(Wki);                                     % normalized weights
 
-xhat    = Xki*wk_pred;
+xhat        = Xki*wk_pred;
+
+zkhat = MeasFcn(xhat, own, model, true);
+Tracks.rk(k) = zk - zkhat;        % measurement residual
+
 
 %% resampling (should be another function)- implement alternative resampling strategies
 Neff = 1/(sum(wk_pred.^2));
@@ -41,12 +45,16 @@ if Neff <= model.Nthr
     %% update
     [xk_new, wk_new] = Resampling(Xki, wk_pred, model);     % updated particles
     xk_new = Regularization(xk_new, Sk, N);                 % Regularization
+    
+    xhat    = xk_new*wk_new;
 else
     xk_new = Xki;
     wk_new = wk_pred;
+    xhat   = xk_new*wk_new;
 end
 
-P   = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';                % estimation covariance
+P       = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';                % estimation covariance
+% P = (xk_new-xhat)*(xk_new-xhat)'/N;                % estimation covariance
 
 Tracks.X{k}         = xhat;
 Tracks.Particles{k} = xk_new;
