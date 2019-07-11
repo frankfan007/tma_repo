@@ -31,10 +31,6 @@ wk_pred     = Wki/sum(Wki);                                     % normalized wei
 
 xhat        = Xki*wk_pred;
 
-zkhat = MeasFcn(xhat, own, model, true);
-Tracks.rk(k) = zk - zkhat;        % measurement residual
-
-
 %% resampling (should be another function)- implement alternative resampling strategies
 Neff = 1/(sum(wk_pred.^2));
 % Neff = -sum(wk_pred.*log(wk_pred)./log(Ns));             % entropy of weights
@@ -46,12 +42,16 @@ if Neff <= model.Nthr
     [xk_new, wk_new] = Resampling(Xki, wk_pred, model);     % updated particles
     xk_new = Regularization(xk_new, Sk, N);                 % Regularization
     
-    xhat    = xk_new*wk_new;
+%     xhat    = xk_new*wk_new;
 else
     xk_new = Xki;
     wk_new = wk_pred;
-    xhat   = xk_new*wk_new;
+%     xhat   = xk_new*wk_new;
 end
+
+zkhat = MeasFcn(xhat, own, model, true);
+Tracks.rk(k) = zk - zkhat;        % measurement residual
+
 
 P       = wk_new'.*(xk_new-xhat)*(xk_new-xhat)';                % estimation covariance
 % P = (xk_new-xhat)*(xk_new-xhat)'/N;                % estimation covariance

@@ -20,10 +20,11 @@ model.vDim      = model.xDim;   % process noise vector size
 model.wDim      = model.zDim;   % measurement noise vector size
 
 %%  Noise parameters
-model.sigma_w   = diag([2.5*pi/180]);               % measurement noise std (in rad)
-model.sigma_v   = 6.4e-10;                         % process noise intensity
-model.Qk        = model.sigma_v*kron(eye(model.PDim),[(model.dT^3)/3 (model.dT^2)/2; (model.dT^2)/2 model.dT]);
-model.R         = 10*model.sigma_w*model.sigma_w';     % mesurement error covariance
+model.sigma_w   = diag([3*pi/180]);                   % measurement noise std (in rad)
+model.sigma_v   = 6.4e-10;                               % process noise intensity
+model.Qk        = model.sigma_v*diag([100 3 100 3].^2);
+% model.Qk        = model.sigma_v*kron(eye(model.PDim),[(model.dT^3)/3 (model.dT^2)/2; (model.dT^2)/2 model.dT]);
+model.R         = 1*model.sigma_w*model.sigma_w';      % mesurement error covariance
 
 %%  Target motion parameters:
 model.sigma_vel = 5;            % velocity standard deviation
@@ -32,13 +33,13 @@ model.bt        = model.sigma_vel*[(model.dT^2)/2; model.dT];
 model.B2        = [kron([eye(2), zeros(2,1)],model.bt); 0 0 model.w_std*model.dT];
 
 %%  Particle Filter parameters
-model.N         = 5e3;         % number of particles
-model.Nthr      = model.N*.5;    % resampling threshold
+model.N         = 3e3;         % number of particles
+model.Nthr      = model.N*.2;    % resampling threshold
 
 %%  initialization parameters
 model.Rinit     = [100 25000];
-model.Cinit     = [0 2*pi-0.0001];
-model.Sinit     = [5*model.knots 25*model.knots];
+model.Cinit     = [0 2*pi];
+model.Sinit     = [5*model.knots 100*model.knots];
 
 %%  Clutter parameters
 model.range_cz  = [-pi/2, pi/2];    % clutter range
