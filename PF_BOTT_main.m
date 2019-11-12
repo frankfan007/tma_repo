@@ -2,16 +2,18 @@
 
 % First Particle filter implementation for bearings-only tracking problem
 
-clc; clearvars; close all;
+clc; clearvars;
 
 % rng('default')
 % s = rng(1,'twister');
 % rng(s)
 MC = 1;           % number of Monte Carlo runs
 
+model           = InitParameters('september_data/scenario_12.mat');                  % initialize all parameters.
+tic
 for mc = 1:MC
     mc
-    model           = InitParameters('Scenario3.mat');                  % initialize all parameters.
+    
     GTruth          = GenTruth(model);                                  % generate ground truth target and observer trajectory
     Measures(mc)    = GenMeas(GTruth, model);                           % offline data generation
     
@@ -27,8 +29,10 @@ for mc = 1:MC
     
     PFResult(mc) = PFtracks;
 end
+toc
 
-PlotResult(PFResult, GTruth, MC)
+close all;
+
 EvaluatePF(GTruth, PFResult, model, MC)
-
+% save('september_data/Result_S12_full.mat','PFResult', 'model', 'GTruth', 'Measures')
 

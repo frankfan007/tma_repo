@@ -41,20 +41,22 @@ tdeath(:)   = K;        % death times of each target
 GTruth.Ownship(:,1) = oinit;
 GTruth.X{1}         = xinit;
 
-manCourse = model.TurnTo;               % maneuver to this course
+
 for tnum = 1:nbirths    % for each target
     targetstate = xinit(:,tnum);        % target initial state
     ownstate = oinit;
     i = 1;
+    
     for k = tbirth(tnum)+1:min(tdeath(tnum),K)
+%         manCourse = model.TurnTo(i);               % maneuver to this course
         targetstate = MarkovTransition(targetstate, model, false);      % transition of the state
         %% observer maneuver
         if k >= model.manStart(i) && k <= model.manEnd(i)
-%             TotalTurn = model.TurnTo - model.oCourse;
-%             model.obs_w = (TotalTurn/((model.manEnd(i)-model.manStart(i))))*pi/180;
-            ownstate =[ownstate(1); model.oSpeed*sin(manCourse*pi/180); ownstate(3); model.oSpeed*cos(manCourse*pi/180)];
+%             TotalTurn = model.turnAmount;
+            model.obs_w = -sign(model.turnAmount(i))*model.TurnRate*pi/180;
+%             ownstate =[ownstate(1); model.oSpeed*sin(manCourse*pi/180); ownstate(3); model.oSpeed*cos(manCourse*pi/180)];
             % coordinated turn leg
-            ownstate = MarkovTransition(ownstate, model, false);  % noiseless state transition
+            ownstate = MarkovTransition(ownstate, model, false, 'CT');  % noiseless state transition
             if k == model.manEnd(i) && i < length(model.manStart)
                 i = i + 1;
             end

@@ -3,16 +3,16 @@
 % First Particle filter implementation for bearings-only tracking problem
 
 clc; clearvars; 
-% rng('default')
+rng('default')
 
-load Senaryo1Kosum1_M.mat;
+load MySenaryo1Kosum1_M_20.mat;
 MC = 1;
 
 for mc = 1:MC
     mc
     model           = InitParameters('Scenario3.mat');                  % initialize all parameters.
     
-    model.K = length(pMilpas.bearing)-200;
+    model.K = length(pMilpas.bearing);
     model.B0 = pMilpas.bearing(1);
     
     %%  particle, weight, state initialization
@@ -29,7 +29,6 @@ for mc = 1:MC
 end
 
 close all;
-% PlotResult(PFResult, pOwnship, pTargetGPS, MC)
 EvaluatePF(pOwnship, pTargetGPS, PFResult, model, MC)
 
 

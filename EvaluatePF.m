@@ -1,20 +1,24 @@
-function EvaluatePF(pOwnship, pTargetGPS, Result, model, MC)
+function EvaluatePF(GTruth, Result, model, MC)
 
+%% Milpas
+% Cgt = atan2d(pTargetGPS.X(2)-pTargetGPS.X(1) , pTargetGPS.Y(2)-pTargetGPS.Y(1)) ;
+% XGrT = [pTargetGPS.X(1:model.K)'; model.knots*pTargetGPS.S(1:model.K)'.*sind(Cgt); ...
+%         pTargetGPS.Y(1:model.K)'; model.knots*pTargetGPS.S(1:model.K)'.*cosd(Cgt)];
 
-Cgt = atan2d(pTargetGPS.X(2)-pTargetGPS.X(1) , pTargetGPS.Y(2)-pTargetGPS.Y(1)) ;
-XGrT = [pTargetGPS.X(1:model.K)'; pTargetGPS.S(1:model.K)'.*sind(Cgt); ...
-        pTargetGPS.Y(1:model.K)'; pTargetGPS.S(1:model.K)'.*cosd(Cgt)];
+% Own  = [pOwnship.X(1:model.K)'; pOwnship.S(1:model.K)'.*sind(pOwnship.C(1:model.K)');...
+%         pOwnship.Y(1:model.K)'; pOwnship.S(1:model.K)'.*cosd(pOwnship.C(1:model.K)')];
 
-Own  = [pOwnship.X(1:model.K)'; pOwnship.S(1:model.K)'.*sind(pOwnship.C(1:model.K)');...
-        pOwnship.Y(1:model.K)'; pOwnship.S(1:model.K)'.*cosd(pOwnship.C(1:model.K)')];
+%% My Data Evaluation
+
 
 for mc = 1:MC
-%     XGrT = cell2mat(GTruth.X');                 % GT target states
-%     Own = GTruth.Ownship;                       % ownship states
+    XGrT = cell2mat(GTruth.X');                 % GT target states
+    Own = GTruth.Ownship;                       % ownship states
     Xest = cell2mat(Result(mc).X');             % estimated target states
     EstiRange(mc,:) = sqrt(sum((Xest([1,3],:) - Own([1,3],:)).^2,1));
     EstiSpeed(mc,:) = sqrt(sum(Xest([2,4],:).^2,1));
-    EstCourse(mc,:) = atan2d(Xest(2,:),Xest(4,:));
+    EstCourse(mc,:) = mod(atan2d(Xest(2,:),Xest(4,:)),360);
+    
     
     SqError(:,:,mc) = (XGrT-Xest).^2;
 end
@@ -25,7 +29,7 @@ TrueRange   = sqrt(sum((XGrT([1,3],:) - Own([1,3],:)).^2,1));
 Rmargins    = [TrueRange-.1*TrueRange; TrueRange+.1*TrueRange];     % +,- 10%
 TrueSpeed   = sqrt(sum(XGrT([2,4],:).^2,1));            
 Smargins    = [TrueSpeed-.1*TrueSpeed; TrueSpeed+.1*TrueSpeed];     % +,- 10%
-TrueCourse  = atan2d(XGrT(2,:),XGrT(4,:));
+TrueCourse  = mod(atan2d(XGrT(2,:),XGrT(4,:)),360);
 Cmargins    = [TrueCourse-2; TrueCourse+2];                         % +,- 1 deg
 
 %% plotting
@@ -40,23 +44,23 @@ hold off
 
 
 %%  RMS Errors
-figure,
-subplot 411, plot(RMSE(1,:)), title('Position Error - X')
-subplot 412, plot(RMSE(3,:)), title('Position Error - Y')
-subplot 413, plot(RMSE(2,:)), title('Velocity Error - X')
-subplot 414, plot(RMSE(4,:)), title('Velocity Error - Y')
+% figure,
+% subplot 411, plot(RMSE(1,:)), title('Position Error - X')
+% subplot 412, plot(RMSE(3,:)), title('Position Error - Y')
+% subplot 413, plot(RMSE(2,:)), title('Velocity Error - X')
+% subplot 414, plot(RMSE(4,:)), title('Velocity Error - Y')
 
-PlotResult(Result, pOwnship, pTargetGPS, MC)
+PlotResult(Result, GTruth, MC)
 
 %% Monte Carlo results
-Rstd = std(EstiRange);
-Cstd = std(EstCourse);
-Sstd = std(EstiSpeed);
+% Rstd = std(EstiRange);
+% Cstd = std(EstCourse);
+% Sstd = std(EstiSpeed);
 
-figure,
-subplot 311, plot(Rstd), title('Range std')
-subplot 312, plot(Cstd), title('Course std')
-subplot 313, plot(Sstd), title('Speed std')
+% figure,
+% subplot 311, plot(Rstd), title('Range std')
+% subplot 312, plot(Cstd), title('Course std')
+% subplot 313, plot(Sstd), title('Speed std')
 
 
 for i = 1:size(EstiRange,2)

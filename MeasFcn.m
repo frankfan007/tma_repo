@@ -16,7 +16,7 @@ wDim        = ModelParams.wDim;         % measurement noise dimension
 
 switch ProblemDim
     case 3
-        %% Do be defined...
+        %% To be defined...
     case 2
         % four-quadrant inverse tangent, Zk in (-pi,pi)
         if ModelParams.zDim == 1
@@ -33,18 +33,6 @@ if IsNoisy
 else
     Zk = z;
 end
-idx = find(Zk<0);
-Zk(idx) = Zk(idx) + 2*pi;
-%% ------------------------
-% revise...
-% if Zk <= -pi
-%     Zk = 2*pi + Zk;
-% elseif Zk > pi
-%     Zk = Zk - 2*pi;
-% else
-%     Zk = Zk;
-% end
-% -------------------------
 
 
 end

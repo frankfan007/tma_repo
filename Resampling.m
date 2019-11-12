@@ -12,13 +12,13 @@ wk_new = ones(Ns,1)/Ns;                                   % new particles (unifo
 % xk_new = GreedyApproach(xki, wk_pred, tau, Ns);
 
 %% MSV approach (deterministic)
-xk_new = MSVresampling(xki, wk_pred, Ns);
+% xk_new = MSVresampling(xki, wk_pred, Ns);
 
-% resampling with replacement (Multinomial)
-% idx = randsample(length(wk_pred), Ns, true, wk_pred);   % uniform resampling w.r.t. normalized weights.
-% xk_new  = xki(:,idx);                                   % updated particles
+%% resampling with replacement (Multinomial)
+idx = randsample(length(wk_pred), Ns, true, wk_pred);   % uniform resampling w.r.t. normalized weights.
+xk_new  = xki(:,idx);                                   % updated particles
 
-% systematic resampling
+%% systematic resampling
 % xk_new = Systematic(xki, wk_pred, Ns);
 
 end
